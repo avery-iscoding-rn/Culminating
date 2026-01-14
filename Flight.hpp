@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <ctime>
+
 #include "Point.hpp"
 #include "Plane.hpp"
 #include "Airport.hpp"
