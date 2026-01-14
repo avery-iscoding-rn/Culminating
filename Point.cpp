@@ -1,4 +1,4 @@
 #include "Point.hpp"
 
-Point::Point(int L, int l)
+Point::Point(int L, double l)
     :longitude(L), latitude(l) {}
