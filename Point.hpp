@@ -8,5 +8,6 @@ class Point {
 private:
     int longitude, latitiude;
 public:
-    Point(int L, int l)
+    Point(int L, int l);
+    int getdistance(Point p1, Point p2);//in KM
 }

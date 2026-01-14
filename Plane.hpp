@@ -11,6 +11,6 @@ private:
     bool flying;
     int capacity, speed;
 public:
-    Point(Point ll, bool f, int cp, int s)
+    Plane(Point ll, bool f, int cp, int s)
     Point getlocation();
 }
