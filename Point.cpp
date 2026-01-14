@@ -1,4 +1,4 @@
-#inlcude "Point.hpp"
+#include "Point.hpp"
 
 Point::Point(int L, int l)
-    :longitude(L), latitiude(l) {}
+    :longitude(L), latitude(l) {}
