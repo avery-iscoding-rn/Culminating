@@ -1,5 +1,5 @@
 #include <iostream>
-#include <algorthim>
+//#include <algorthim>
 #include <string>
 #include <vector>
 #include <cmath>
@@ -13,5 +13,5 @@ private:
     std::vector<int> planes; //planes at the airport
 
 public:
-    Airport(std::string c, Point ll)//constructor
-}
+    Airport(std::string c, Point ll);//constructor
+};

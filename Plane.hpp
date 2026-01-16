@@ -1,5 +1,9 @@
+#ifndef PLANE_HPP
+#define PLANE_HPP
+
+
 #include <iostream>
-#include <algorthim>
+//#include <algorthim>
 #include <string>
 #include <vector>
 #include <cmath>
@@ -11,6 +15,7 @@ private:
     bool flying;
     int capacity, speed;
 public:
-    Plane(Point ll, bool f, int cp, int s)
-    Point getlocation();
-}
+    Plane(Point ll, bool f, int cp, int s);
+    //Point getlocation();
+};
+#endif
