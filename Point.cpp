@@ -1,6 +1,6 @@
 #include "Point.hpp"
 
-Point::Point(int L, double l)
+Point::Point(int L, int l)
     :longitude(L), latitude(l) {}
 
 Point::getdistance(Point p1, Point p2) {
@@ -13,7 +13,7 @@ Point::getdistance(Point p1, Point p2) {
     double Dlong = rad2long - rad1long;
     double Dlat = rad2lat - rad1lat;
 
-    double a = ((std::sin(Dlat/2))**2) + (std::cos(rad1lat) * std::cos(rad2lat) * (std::sin(Dlong/2))**2)
+    double a = ((std::sin(Dlat/2))**2) + (std::cos(rad1lat) * std::cos(rad2lat) * (std::sin(Dlong/2))**2);
     double c = 2* (a * tan2(std::sqrt(a), std::sqrt(1-a))) ;
     double distance = 6731 * c;
     return distance;

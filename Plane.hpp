@@ -1,5 +1,9 @@
+#ifndef PLANE_HPP
+#define PLANE_HPP
+
+
 #include <iostream>
-#include <algorthim>
+//#include <algorthim>
 #include <string>
 #include <vector>
 #include <cmath>
