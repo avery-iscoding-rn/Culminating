@@ -12,5 +12,5 @@ private:
     int capacity, speed;
 public:
     Plane(Point ll, bool f, int cp, int s)
-    Point getlocation();
+    Point::getDistance();
 }
