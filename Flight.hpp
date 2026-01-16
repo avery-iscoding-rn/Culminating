@@ -17,6 +17,7 @@ private:
     int liftoff, arrival;
 
 public:
-    Flight(std::string c, Airport d, Airport o, Plane p, int l, int a)//constructor
-    int getTime;
-}
+    Flight(std::string c, Airport d, Airport o, Plane p, int l, int a);//constructor;
+
+    int getTime(int distance, Plane plane){};
+};
