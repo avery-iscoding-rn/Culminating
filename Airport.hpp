@@ -8,6 +8,8 @@
 
 class Airport {
 private:
+    std::string name;
+    std::string city;
     std::string code;
     Point coordinates;
     std::vector<int> planes; //planes at the airport

@@ -1,0 +1,78 @@
+name
+city
+code 
+coordinates
+planes
+
+Pearson international airport
+toronto
+YYZ
+{43.6798,79.6284}
+planes
+
+John F Kennedy Intl airport
+New York
+JFK
+{40.6446,73.7797}
+planes
+
+Paris Charles de Gaulle Airport
+Paris
+CDG
+{49.0079, 2.5508}
+planes
+
+Heathrow airport
+London
+LHR
+{51.4680, 0.4550}
+planes
+
+Mexico City International Airport Benito Juárez
+Mexico City
+MEX
+{19.4361, 99.0719}
+planes
+
+Haneda airport 
+Tokyo
+Haneda
+{35.5483, 139.7780}
+planes
+
+Beijing Capital International Airport
+Beijing
+PEK
+{40.0799, 116.6031}
+planes
+
+Indira Gandhi International Airport
+New Delhi
+DEL
+{28.5561, 77.1000}
+planes
+
+Moscow Sheremetyevo Alexander S. Pushkin International Airport
+Moscow
+SVO
+{55.9725, 37.4119}
+planes
+
+Djibouti-Ambouli International Airport
+Djibouti
+JIB
+{11.5521, 43.1497}
+planes
+
+Addis Ababa
+Bole Addis Ababa International Airport
+ADD
+{8.9838, 38.7963}
+planes
+
+Tirana International Airport
+Tirana 
+TIA
+{41.41472, 19.72056}
+planes
+
