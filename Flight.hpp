@@ -18,4 +18,5 @@ private:
 
 public:
     Flight(std::string c, Airport d, Airport o, Plane p, int l, int a)//constructor
+    int getTime;
 }

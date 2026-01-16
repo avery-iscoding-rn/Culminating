@@ -2,3 +2,8 @@
 
 Flight::Flight(std::string c, Airport d, Airport o, Plane p, int l, int a)
     :code(c), destination(d), origin(o), aircraft(p), liftoff(l), arrival(a) {}
+
+Flight::getTime(int distance, Plane plane){
+    time = distance / plane.speed;
+    return time;
+}
