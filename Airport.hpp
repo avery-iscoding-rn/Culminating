@@ -15,5 +15,5 @@ private:
     std::vector<int> planes; //planes at the airport
 
 public:
-    Airport(std::string c, Point ll);//constructor
+    Airport(std::string n, std::string cty, std::string c, Point ll);//constructor
 };
