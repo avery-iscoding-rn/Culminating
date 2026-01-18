@@ -1,7 +1,7 @@
 #include "Point.hpp"
 
-Point::Point(int L, int l)
-    :longitude(L), latitude(l) {}
+Point::Point(int l, int L)
+    :latitude(l), longitude(L) {}
 
 Point::getdistance(Point p1, Point p2) {
     double rad1long = p1.longitude*(M_PI/180);
