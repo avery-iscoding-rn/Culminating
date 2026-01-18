@@ -49,15 +49,15 @@ void readairports() {
 
         Airport temporary(name, city, code, temp);
         Airports.push_back(temporary);
+        std::cout << "\n" << temporary.getname();
     }
     inFile.close();
 }
 
+
 void setup() {
     readairports();
-    //printairpoints();
 }
-
 
 void printtime() {
     time_t rn = time(NULL);
