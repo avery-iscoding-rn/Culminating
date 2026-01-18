@@ -15,7 +15,7 @@ private:
     bool flying;
     int capacity, speed;
 public:
-    Plane(Point ll, bool f, int cp, int s)
-    Point::getDistance();
-}
+    Plane(Point ll, bool f, int cp, int s);
+    Point getDistance();
+};
 #endif

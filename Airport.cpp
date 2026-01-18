@@ -3,18 +3,18 @@
 Airport::Airport(std::string n, std::string cty, std::string c, Point ll)
     :name(n), city(cty), code(c), coordinates(ll) {}
 
-Airport::getname() {
+std::string Airport::getname() {
     return name;
 }
 
-Airport::getcity() {
+std::string Airport::getcity() {
     return city;
 }
 
-Airport::getcode() {
+std::string Airport::getcode() {
     return code;
 }
 
-Airport::getlocation(){
+Point Airport::getlocation(){
     return coordinates;
 }

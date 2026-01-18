@@ -1,5 +1,5 @@
-#ifndef PLANE_HPP
-#define PLANE_HPP
+#ifndef POINT_HPP
+#define POINT_HPP
 
 #include <iostream>
 //#include <algorithm>

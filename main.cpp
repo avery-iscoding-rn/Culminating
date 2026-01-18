@@ -8,7 +8,6 @@
 #include "Point.hpp"
 
 #include <iostream>
-//#include <algorthim>
 #include <string>
 #include <vector>
 #include <ctime>
@@ -49,7 +48,6 @@ void readairports() {
 
         Airport temporary(name, city, code, temp);
         Airports.push_back(temporary);
-        std::cout << "\n" << temporary.getname();
     }
     inFile.close();
 }

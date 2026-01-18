@@ -1,3 +1,6 @@
+#ifndef FLIGHT_HPP
+#define FLIGHT_HPP
+
 #include <iostream>
 //#include <algorthim>
 #include <string>
@@ -5,7 +8,6 @@
 #include <cmath>
 #include <ctime>
 
-#include "Point.hpp"
 #include "Plane.hpp"
 #include "Airport.hpp"
 
@@ -19,5 +21,6 @@ private:
 public:
     Flight(std::string c, Airport d, Airport o, Plane p, int l, int a);//constructor;
 
-    int getTime(int distance, Plane plane){};
+    int getTime(int distance, Plane plane);
 };
+#endif
