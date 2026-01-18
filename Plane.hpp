@@ -18,3 +18,4 @@ public:
     Plane(Point ll, bool f, int cp, int s)
     Point::getDistance();
 }
+#endif
