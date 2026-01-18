@@ -11,11 +11,19 @@
 
 class Plane {
 private:
+    std::string name;
     Point coordinates;
     bool flying;
     int capacity, speed;
 public:
-    Plane(Point ll, bool f, int cp, int s);
-    Point getDistance();
+    Plane(std::string n, Point loc, bool f, int cp, int s);
+    std::string getmodel();
+    bool status(); //get flying 
+    int getcapacity();
+    int getspeed();
+
+    void land();
+    void takeoff();
+    
 };
 #endif

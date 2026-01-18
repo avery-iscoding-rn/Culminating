@@ -1,7 +1,8 @@
 #include "Airport.hpp"
+#include <iostream>
 
-Airport::Airport(std::string n, std::string cty, std::string c, Point ll)
-    :name(n), city(cty), code(c), coordinates(ll) {}
+Airport::Airport(std::string n, std::string cty, std::string c, Point loc)
+    :name(n), city(cty), code(c), coordinates(loc) {}
 
 std::string Airport::getname() {
     return name;
@@ -17,4 +18,33 @@ std::string Airport::getcode() {
 
 Point Airport::getlocation(){
     return coordinates;
+}
+
+void Airport::addplane(Plane p) { //plane is at the airport, it is no longer flying (land makes flying bool = false)
+    planes.push_back(p);
+    p.land();
+}
+
+void Airport::removeplane(Plane p) {
+    std::vector<Plane> temp;
+    for (int i = 0; i < planes.size(); i++) { //create a new vector, duplicates planes except for the one we're deleting
+        if (planes[i].getcapacity() != p.getcapacity()) { //each plane has a unique capacity so comparing them works well
+            temp.push_back(planes[i]);
+        }
+    }
+    planes = temp; //turn planes into the temp --> target plane has been deleted
+    p.takeoff(); //bool == true (flying) becuase its leaving the airport
+}
+
+void Airport::printplanes() {
+    if (!planes.empty()) {
+        for (int i = 0; i < planes.size(); i++) {
+            std::cout << planes[i].getmodel(); //prints the name of the plane
+            if (i != planes.size()-1) {
+                std::cout << ", ";
+            }
+        }
+    } else {
+        std::cout << "no planes";
+    }
 }

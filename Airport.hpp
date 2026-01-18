@@ -12,11 +12,14 @@ private:
     std::string city;
     std::string code;
     Point coordinates;
-    std::vector<int> planes; //planes at the airport
+    std::vector<Plane> planes; //planes at the airport
 public:
     std::string getname();
     std::string getcity();
     std::string getcode();
     Point getlocation();
-    Airport(std::string n, std::string cty, std::string c, Point ll);//constructor
+    Airport(std::string n, std::string cty, std::string c, Point loc);//constructor
+    void addplane(Plane p);
+    void removeplane(Plane p);
+    void printplanes();
 };
