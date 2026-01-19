@@ -52,7 +52,6 @@ Flight::getPoint(Flight F, int timern){
     if (t > 1){
         t = .999;
     }
-    // coordinates currentPoint = {xO + (percentofFlight*resultant.x),  yO + (percentofFlight*resultant.y), zO + (percentofFlight*resultant.z)};
 
     // Spherical linear interpolation
     // Don't really know how this works tbh
