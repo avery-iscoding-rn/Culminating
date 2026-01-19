@@ -25,9 +25,13 @@ public:
     std::string getcode();
     Point getlocation();
 
+    //adds plane to airport vector of planes (i.e. plane arrives at airport)
     void addplane(Plane p);
+    //removes plane from airport vector of planes (i.e. plane leaves airport)
     void removeplane(Plane p);
+    //prints all planes within an airport (prints "no planes" if empty)
     void printplanes();
+    // RECURSION EXAMPLE //indexes planes array until plane is found or else false is returned
     bool contains(Plane p, int i);
 };
 #endif

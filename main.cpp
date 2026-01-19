@@ -18,16 +18,18 @@
 //GLOBAL VARIABLES------------
 int hours, minutes, allminutes; //allminutes is ongoing counter that never resets, minutes and hours are for display
 time_t start = time(NULL); //inital timestamp for reference-- for start of program to reset simulated time
+time_t rn;
 std::vector<Airport> Airports;
 std::vector<Flight> plannedflights; 
+bool running = true;  //if program is running
 //-----------------------------
 
 
 
 
 //FUNCTIONS -------------------
-
-int randomInt(int low, int high) { //Random number generator i found somewhere
+//Random number generator i found somewhere
+int randomInt(int low, int high) { 
     static std::random_device rd;
     static std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(low, high);
@@ -35,8 +37,8 @@ int randomInt(int low, int high) { //Random number generator i found somewhere
 }
 
     //SETUP FUNCTIONS===========
-
-void readairports() { //fills the vector of all the airports from the text file
+//fills the vector of all the airports from the text file
+void readairports() { 
     std::ifstream inFile;
     inFile.open("airports.txt");
     std::string line;
@@ -65,8 +67,8 @@ void readairports() { //fills the vector of all the airports from the text file
     }
     inFile.close();
 }
-
-void createplanes() { //creates planes and puts them in a random airport
+//creates planes and puts them in a random airport
+void createplanes() { 
     int num;
 
     num = randomInt(0,11);
@@ -83,7 +85,7 @@ void createplanes() { //creates planes and puts them in a random airport
 }
 
     //PLANE/FLIGHT FUNCTIONS
-
+//creates an inital flight for each plane to start the schedule (vector of flights)
 void initalflights() {
     int j;
     for (int i = 0; i < 3; i++) {
@@ -107,6 +109,7 @@ void initalflights() {
 }
 
     //TIME FUNCTIONS============
+//Prints time in HH:MM -- starts at zero though
 void printtime() {
     time_t rn = time(NULL);
     rn = rn-start;
@@ -120,9 +123,11 @@ void printtime() {
 
     printf("Current sim, time is %02d:%02d\n", minutes, seconds);
 }
+//===============
 
+//refreshes time (boht HH:MM and allminutes which is just and ongoing counter of the seconds since program started)
 void resettime() {
-        time_t rn = time(NULL);
+        rn = time(NULL);
     rn = rn-start;
 
     //converting into readable format
@@ -132,39 +137,38 @@ void resettime() {
     int hours = minutes/60;
     minutes = minutes - (hours*60);
 }
-    //===============
-
+//searches vectors for the given flight code (basically linear search)
 void searchflightcode(){
-    std::cout << "Enter the code of the flight you are looking for: "
-        int code;
-        std::cin >> code;
-        bool doesexist = false;
-        searchindex;
-
-        for (int i = 0; i < plannedflights.size(); i ++){
-            if (plannedflights[i].getcode() == code){
-                doesexist = true;
+    std::cout << "Enter the code of the flight you are looking for: ";
+    std::string code;
+    std::cin >> code;
+    bool doesexist = false;
+    int searchindex;
+    
+    for (int i = 0; i < plannedflights.size(); i ++){
+        if (plannedflights[i].getcode() == code){
+            doesexist = true;
                 searchindex = i;
             }
-        
-        if (doesexist == false){
-            std::cout << "\nFlight not found.";
+            
+            if (doesexist == false){
+                std::cout << "\nFlight not found.";
         }
 
         else {
             std::cout << "\nFlight: " << plannedflights[searchindex].getorigin().getcode() << " - > " << plannedflights[searchindex].getdest().getcode();
             std::cout<< "\nDeparting from:  " << plannedflights[searchindex].getorigin().getcity();
-            std::cout<< "\nHeaded to:  " << plannedflights[searchindex].getdestination().getcity();
+            std::cout<< "\nHeaded to:  " << plannedflights[searchindex].getdest().getcity();
             std::string planestatus;
             resettime();
-            Point currentlocation = Flight::getPoint(plannedflights[searchindex], timern);
+            Point currentlocation = Flight::getPoint(plannedflights[searchindex], rn);
             if ((plannedflights[searchindex].getorigin().getlocation().getlat)-1 <= plannedflights[searchindex].getorigin().getlocation().getlat <= (plannedflights[searchindex].getorigin().getlocation().getlat)+1) && ((plannedflights[searchindex].getorigin().getlocation().getlong())-1 <= plannedflights[searchindex].getorigin().getlocation().getlong() <= 1 + plannedflights[searchindex].getorigin().getlocation().getlong) {
                 planestatus = "Departing Soon"; 
             }
             else if ((plannedflights[searchindex].getdest().getlocation().getlat)-1 <= plannedflights[searchindex].getdest().getlocation().getlat <= (plannedflights[searchindex].getdest().getlocation().getlat)+1) && ((plannedflights[searchindex].getdest().getlocation().getlong())-1 <= plannedflights[searchindex].getdest().getlocation().getlong() <= 1 + plannedflights[searchindex].getdest().getlocation().getlong) {
                 planestatus= "Arrived";
             }
-            if planestatus == "Arrived" or "Departing Soon"{
+            if (planestatus == "Arrived" or "Departing Soon"){
                 std::cout<<"\nStatus:   " << planestatus;
             }
             else {
@@ -176,30 +180,31 @@ void searchflightcode(){
     }
 }
 
-void menu() { //menu printing function
-    std::cout << "1. See flight schedule\n2. See live updates\n3. Find a plane\n4. Find an airport\n5. Exit\n-> ";
+//prints menu, processes user input (also validates it), then runs subsequent function
+void menu() {
+    std::cout << "1. See flight schedule\n2. See live updates\n3. Find a plane\n4. Find an airport\n5. Search by flight code \n6. Exit\n-> ";
     int num;
     std::cin >> num;
     //making sure number is valid
     do {
-    std::cout << "\nPlease enter a number between 1-5\n";
-    std::cout << "1. See flight schedule\n2. See live updates\n3. Find a plane\n4. Find an airport\n5. Search by flight code \n6. Exit\n-> ";
+        std::cout << "\nPlease enter a number between 1-5\n";
+        std::cout << "1. See flight schedule\n2. See live updates\n3. Find a plane\n4. Find an airport\n5. Search by flight code \n6. Exit\n-> ";
     } while (num > 7 || num < 1);
-
-    if (num == 1) { // FLIGHT SCHEDULE
+    
+    if (num == 1) { // FLIGHT SCHEDULEs
         std::cout << "placeholder";
-
+        
     } else if (num == 2) { //SEE LIVE UPDATES
         std::cout << "placeholder";
 
     } else if (num == 3) { //FIND A PLANE
         std::cout << "placeholder";
-
+        
     } else if (num == 4) { //FIND AN AIRPORT
         std::cout << "placeholder";
-
+        
     } else if (num == 5){ // search by flight code
-        searchflightcode()
+        searchflightcode();
     }
     else if(num == 6){
         std::cout<<"\nGoodbye";
@@ -207,8 +212,8 @@ void menu() { //menu printing function
     }
 }
 
-
-void setup() { //simplification of setup
+//simplification of set up that needs to be done at start of program (airports, planes, flights)
+void setup() { 
     readairports();
     createplanes();
     initalflights();
@@ -218,7 +223,7 @@ void setup() { //simplification of setup
 //------------------------------------------------------
 
 
-//main
+//main function
 int main(void){
     setup();
 

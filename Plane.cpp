@@ -15,14 +15,16 @@ int Plane::getspeed() {
     return speed; //in K/M
 }
 
+//returns true if plane is flying, false if plane is not
 bool Plane::status() {
     return flying; //if flying
 }
 
+//switches status to false, as plane is no longer flying
 void Plane::land() {
     flying = false;
 }
-
+//switches status to true, as plane is no longer flying
 void Plane::takeoff() {
     flying = true;
 }

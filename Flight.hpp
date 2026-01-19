@@ -22,7 +22,9 @@ private:
 public:
     Flight(std::string c, Airport d, Airport o, Plane p, int l, int a);//constructor;
 
-    Point getPoint(Flight F, int timern); //returns location of the plane
+    //finds current location of a plane en route between two different airport depending on the current time
+    Point getPoint(Flight F, int timern); 
+    //returns location of the plane in point (lat and long)
 
     Airport getdest();
     Airport getorigin();

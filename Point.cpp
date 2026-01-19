@@ -3,6 +3,7 @@
 Point::Point(double l, double L)
     :latitude(l), longitude(L) {}
 
+//calculates distance between two points, taking into account the curve of earth's surface
  double Point::getdistance(const Point& p1, const Point& p2) {
     double rad1long = p1.longitude*(M_PI/180);
     double rad2long = p2.longitude*(M_PI/180);

@@ -9,6 +9,7 @@ struct coordinates {
     double z;
 }; // longitude and latitude angles must be converted to an [x,y,z] vector
 
+//finds current location of a plane en route between two different airport depending on the current time
 Point Flight::getPoint(Flight F, int timern){
 
     int R = 6371; // earth's radius

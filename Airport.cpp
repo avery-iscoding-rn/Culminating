@@ -19,12 +19,12 @@ std::string Airport::getcode() {
 Point Airport::getlocation(){
     return coordinates;
 }
-
+//adds plane to airport vector of planes (i.e. plane arrives at airport)
 void Airport::addplane(Plane p) { //plane is at the airport, it is no longer flying (land makes flying bool = false)
     planes.push_back(p);
     p.land();
 }
-
+//removes plane from airport vector of planes (i.e. plane leaves airport)
 void Airport::removeplane(Plane p) {
     std::vector<Plane> temp;
     for (int i = 0; i < planes.size(); i++) { //create a new vector, duplicates planes except for the one we're deleting
@@ -47,7 +47,7 @@ bool Airport::contains(Plane p, int i) {
     return contains(p, i+1);
 }
 
-
+//prints all planes within an airport (prints "no planes" if empty)
 void Airport::printplanes() {
     if (!planes.empty()) {
         for (int i = 0; i < planes.size(); i++) {

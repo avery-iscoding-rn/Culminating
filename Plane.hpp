@@ -18,11 +18,14 @@ private:
 public:
     Plane(std::string n, Point loc, bool f, int cp, int s);
     std::string getmodel();
-    bool status(); //get flying 
+    //returns true if plane is flying, false if plane is not
+    bool status();
     int getcapacity();
     int getspeed();
 
+    //switches status to false, as plane is no longer flying
     void land();
+    //switches status to true, as plane is no longer flying
     void takeoff();
     
 };
