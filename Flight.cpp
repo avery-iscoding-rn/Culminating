@@ -22,22 +22,16 @@ Flight::getPoint(Flight F, int timern){
     double zO = sin(φ);
     // Using degrees in radians to a vector (origin)
 
-    double φ2 = F.destination.coordinates.latitude* M_PI / 180;
-    double λ2 = F.destination.coordinates.longitude* M_PI / 180;
+    double φ2 = F.getdest().getlocation().getlat()* M_PI / 180;
+    double λ2 = F.getdest().getlocation().getlong()* M_PI / 180;
     // Converting degrees to radians
 
     double xD = cos(φ2) * cos(λ2);
     double yD = cos(φ2) * sin(λ2);
     double zD = sin(φ2);
-    // Using degrees in radians to a vector (destination)
 
-    double angle = (xO*xD)+(yO*yD)+(zO*zD);
-    // Dot product of 2 vectors to obtain angle between them
-
-    double surfacedistance = R * std::acos(angle);
-    // Multiplying the cos of this angle by the earth's radius will give us the surface distance between the 2 points
-    // Because cos theta = a / h so a = surface distance and h = the earth's radius
-    // I think that's why but not 100% sure lol
+    double angle = std::acos((xO*xD)+(yO*yD)+(zO*zD));
+    double surfacedistance = R * angle;
 
     double distance = getdistance(F.destination.coordinates, F.origin.coordinates);
     // not needed (?)
@@ -51,7 +45,7 @@ Flight::getPoint(Flight F, int timern){
     if (t > 1){
         t = .999;
     }
-    // There are problems if t > 1 
+    // coordinates currentPoint = {xO + (percentofFlight*resultant.x),  yO + (percentofFlight*resultant.y), zO + (percentofFlight*resultant.z)};
 
     // Spherical linear interpolation
     // Don't really know how this works tbh
@@ -63,10 +57,15 @@ Flight::getPoint(Flight F, int timern){
 
 
     double len = sqrt(currentPoint.x*currentPoint.x + currentPoint.y*currentPoint.y + currentPoint.z*currentPoint.z);
-    if (len > 0) {
-    currentPoint.x = currentPoint.x / len;
-    currentPoint.y = currentPoint.y /len;
-    currentPoint.z = currentPoint.z /len;
+    // Resultant magnitude (Length of vector)
+
+    if (len != 0) {
+        // can't be 0
+
+        currentPoint.x = currentPoint.x / len;
+        currentPoint.y = currentPoint.y /len;
+        currentPoint.z = currentPoint.z /len;
+        // Divide it back by length to get unit vector of length 1 (?) before converting back to radians 
     }
 
     double A = std::atan2(currentPoint.z,(std::sqrt(std::pow(currentPoint.x,2)+(std::pow(currentPoint.y,2))))); //latitdude, radians

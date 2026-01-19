@@ -1,9 +1,9 @@
 #include "Point.hpp"
 
-Point::Point(int l, int L)
+Point::Point(double l, double L)
     :latitude(l), longitude(L) {}
 
-Point::getdistance(Point p1, Point p2) {
+ double Point::getdistance(const Point& p1, const Point& p2) {
     double rad1long = p1.longitude*(M_PI/180);
     double rad2long = p2.longitude*(M_PI/180);
 
@@ -18,4 +18,11 @@ Point::getdistance(Point p1, Point p2) {
     double c = 2* std::atan2(std::sqrt(a), std::sqrt(1-a)) ;
     double distance = 6731 * c; // earth's radius
     return distance;
+}
+
+double Point::getlat(){
+    return latitude;
+}
+double Point::getlong(){
+    return longitude;
 }
