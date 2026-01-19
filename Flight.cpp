@@ -29,9 +29,15 @@ Flight::getPoint(Flight F, int timern){
     double xD = cos(φ2) * cos(λ2);
     double yD = cos(φ2) * sin(λ2);
     double zD = sin(φ2);
+    // Using degrees in radians to a vector (destination)
 
-    double angle = std::acos((xO*xD)+(yO*yD)+(zO*zD));
-    double surfacedistance = R * angle;
+    double angle = (xO*xD)+(yO*yD)+(zO*zD);
+    // Dot product to find angle between 2 location vectors
+
+    double surfacedistance = std::acos(R * angle);
+    // Multiplying the cos of this angle by the earth's radius will give us the surface distance between the 2 points
+    // Because cos theta = a / h so a = surface distance and h = the earth's radius
+    // I think that's why but not 100% sure lol
 
     double distance = getdistance(F.destination.coordinates, F.origin.coordinates);
     // not needed (?)
@@ -41,6 +47,7 @@ Flight::getPoint(Flight F, int timern){
 
     double t = Distancetravelled/surfacedistance;
     // Factor by which you need to multiply the unit vector [x,y,z] because that is just a ratio, not an exact distance
+    // Percent of trip done
 
     if (t > 1){
         t = .999;
