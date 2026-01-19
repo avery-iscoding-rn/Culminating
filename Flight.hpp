@@ -10,6 +10,7 @@
 
 #include "Plane.hpp"
 #include "Airport.hpp"
+#include "Point.hpp"
 
 class Flight {
 private:
@@ -20,7 +21,9 @@ private:
 
 public:
     Flight(std::string c, Airport d, Airport o, Plane p, int l, int a);//constructor;
-    
+
+    Point getPoint(Flight F, int timern); //returns location of the plane
+
     Airport getdest();
     Airport getorigin();
     std::string getcode();

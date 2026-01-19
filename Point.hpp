@@ -9,9 +9,11 @@
 
 class Point {
 private:
-    int longitude, latitude;
+    double longitude, latitude;
 public:
-    Point(int l, int L);
-    int getdistance(Point p1, Point p2);//in KM
+    Point(double l, double L);
+    static double getdistance(const Point& p1, const Point& p2); //in KM
+    double getlat();
+    double getlong();
 };
 #endif

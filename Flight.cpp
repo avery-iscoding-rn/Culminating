@@ -1,4 +1,5 @@
 #include "Flight.hpp"
+#include "Point.hpp"
 
 Flight::Flight(std::string c, Airport d, Airport o, Plane p, int l, int a)
     :code(c), destination(d), origin(o), aircraft(p), liftoff(l), arrival(a) {}
@@ -9,15 +10,15 @@ struct coordinates {
     double z;
 };
 
-Flight::getPoint(Flight F, int timern){
+Point Flight::getPoint(Flight F, int timern){
     int R = 6371;
-    double φ = F.origin.coordinates.latitude * M_PI / 180;
-    double λ = F.origin.coordinates.longitude* M_PI / 180;
+    double φ = F.origin.getlocation().getlat() * M_PI / 180;
+    double λ = F.origin.getlocation().getlong()* M_PI / 180;
     double xO = cos(φ) * cos(λ);
     double yO = cos(φ) * sin(λ);
     double zO = sin(φ);
-    double φ2 = F.destination.coordinates.latitude* M_PI / 180;
-    double λ2 = F.destination.coordinates.longitude* M_PI / 180;
+    double φ2 = F.getdest().getlocation().getlat()* M_PI / 180;
+    double λ2 = F.getdest().getlocation().getlong()* M_PI / 180;
     double xD = cos(φ2) * cos(λ2);
     double yD = cos(φ2) * sin(λ2);
     double zD = sin(φ2);
@@ -25,12 +26,12 @@ Flight::getPoint(Flight F, int timern){
     double angle = std::acos((xO*xD)+(yO*yD)+(zO*zD));
     double surfacedistance = R * angle;
 
-    double distance = getdistance(F.destination.coordinates, F.origin.coordinates);
+    double distance = Point::getdistance(F.getdest().getlocation(), F.getdest().getlocation());
     //Point resultant = {F.destination.coordinates.latitude-F.origin.coordinates.latitude, F.destination.coordinates.longitude - F.origin.coordinates.longitude};
     // coordinates resultant = {xD-xO, yD-yO, zD-zO}; 
 
 
-    double Distancetravelled = 100 * (timern - F.liftoff);
+    double Distancetravelled = 100 * (timern - F.liftofftime());
     // will be changed to Flight.aircraft.speed
 
     //Velocity (km/h) x time spent = distance travelled

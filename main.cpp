@@ -82,12 +82,6 @@ void createplanes() { //creates planes and puts them in a random airport
     Airports[num].addplane(Boeing777);
 }
 
-
-void setup() { //simplification of setup
-    readairports();
-    createplanes();
-    initalflights();
-}
     //PLANE/FLIGHT FUNCTIONS
 
 void initalflights() {
@@ -106,7 +100,7 @@ void initalflights() {
         } while (dest != i);
 
         //creating flight
-        Flight temporary(randomInt(100000,999999), Airports[dest] ,Airports[i], Airports[i].planes[0],allminutes,-1); //arrival is -1 for rn cuz we don't know time yet
+        Flight temporary(std::to_string(randomInt(100000,999999)), Airports[dest] ,Airports[i], Airports[i].planes[0],allminutes,-1); //arrival is -1 for rn cuz we don't know time yet
         temporary.getorigin().removeplane(temporary.getaircraft()); //removes and makes plane bool "flyings"/true
         plannedflights.push_back(temporary);
     }
@@ -139,6 +133,13 @@ void resettime() {
     minutes = minutes - (hours*60);
 }
     //===============
+
+void setup() { //simplification of setup
+    readairports();
+    createplanes();
+    initalflights();
+}
+
 //------------------------------------------------------
 
 
