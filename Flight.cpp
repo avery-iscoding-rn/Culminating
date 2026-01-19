@@ -1,5 +1,4 @@
 #include "Flight.hpp"
-#include "Point.hpp"
 
 Flight::Flight(std::string c, Airport d, Airport o, Plane p, int l, int a)
     :code(c), destination(d), origin(o), aircraft(p), liftoff(l), arrival(a) {}
@@ -8,40 +7,55 @@ struct coordinates {
     double x;
     double y;
     double z;
-};
+}; // longitude and latitude angles must be converted to an [x,y,z] vector
 
-Point Flight::getPoint(Flight F, int timern){
-    int R = 6371;
-    double φ = F.origin.getlocation().getlat() * M_PI / 180;
-    double λ = F.origin.getlocation().getlong()* M_PI / 180;
+Flight::getPoint(Flight F, int timern){
+
+    int R = 6371; // earth's radius
+
+    double φ = F.origin.coordinates.latitude * M_PI / 180;
+    double λ = F.origin.coordinates.longitude* M_PI / 180;
+    // Converting degrees to radians
+
     double xO = cos(φ) * cos(λ);
     double yO = cos(φ) * sin(λ);
     double zO = sin(φ);
+    // Using degrees in radians to a vector (origin)
+
     double φ2 = F.getdest().getlocation().getlat()* M_PI / 180;
     double λ2 = F.getdest().getlocation().getlong()* M_PI / 180;
+    // Converting degrees to radians
+
     double xD = cos(φ2) * cos(λ2);
     double yD = cos(φ2) * sin(λ2);
     double zD = sin(φ2);
+    // Using degrees in radians to a vector (destination)
 
-    double angle = std::acos((xO*xD)+(yO*yD)+(zO*zD));
-    double surfacedistance = R * angle;
+    double angle = (xO*xD)+(yO*yD)+(zO*zD);
+    // Dot product to find angle between 2 location vectors
 
-    double distance = Point::getdistance(F.getdest().getlocation(), F.getdest().getlocation());
-    //Point resultant = {F.destination.coordinates.latitude-F.origin.coordinates.latitude, F.destination.coordinates.longitude - F.origin.coordinates.longitude};
-    // coordinates resultant = {xD-xO, yD-yO, zD-zO}; 
+    double surfacedistance = std::acos(R * angle);
+    // Multiplying the cos of this angle by the earth's radius will give us the surface distance between the 2 points
+    // Because cos theta = a / h so a = surface distance and h = the earth's radius
+    // I think that's why but not 100% sure lol
 
+    double distance = getdistance(F.destination.coordinates, F.origin.coordinates);
+    // not needed (?)
 
-    double Distancetravelled = 100 * (timern - F.liftofftime());
-    // will be changed to Flight.aircraft.speed
-
+    double Distancetravelled = Flight.aircraft.speed * (timern - F.liftoff);
     //Velocity (km/h) x time spent = distance travelled
+
     double t = Distancetravelled/surfacedistance;
+    // Factor by which you need to multiply the unit vector [x,y,z] because that is just a ratio, not an exact distance
+    // Percent of trip done
+
     if (t > 1){
         t = .999;
     }
     // coordinates currentPoint = {xO + (percentofFlight*resultant.x),  yO + (percentofFlight*resultant.y), zO + (percentofFlight*resultant.z)};
 
-    /// sherical linear interpolation
+    // Spherical linear interpolation
+    // Don't really know how this works tbh
     coordinates currentPoint {
         (sin((1-t)*angle) / sin(angle) * xO + sin (t*angle) / sin(angle) * xD),
         (sin((1-t)*angle) / sin(angle) * yO + sin (t*angle) / sin(angle) * yD),
@@ -50,10 +64,15 @@ Point Flight::getPoint(Flight F, int timern){
 
 
     double len = sqrt(currentPoint.x*currentPoint.x + currentPoint.y*currentPoint.y + currentPoint.z*currentPoint.z);
-    if (len > 0) {
-    currentPoint.x = currentPoint.x / len;
-    currentPoint.y = currentPoint.y /len;
-    currentPoint.z = currentPoint.z /len;
+    // Resultant magnitude (Length of vector)
+
+    if (len != 0) {
+        // can't be 0
+
+        currentPoint.x = currentPoint.x / len;
+        currentPoint.y = currentPoint.y /len;
+        currentPoint.z = currentPoint.z /len;
+        // Divide it back by length to get unit vector of length 1 (?) before converting back to radians 
     }
 
     double A = std::atan2(currentPoint.z,(std::sqrt(std::pow(currentPoint.x,2)+(std::pow(currentPoint.y,2))))); //latitdude, radians

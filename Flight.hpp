@@ -31,4 +31,7 @@ public:
     int liftofftime();
     int landingtime();
 };
+
+struct coordinates;
+
 #endif
