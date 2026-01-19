@@ -9,12 +9,12 @@ struct coordinates {
     double z;
 }; // longitude and latitude angles must be converted to an [x,y,z] vector
 
-Flight::getPoint(Flight F, int timern){
+Point Flight::getPoint(Flight F, int timern){
 
     int R = 6371; // earth's radius
 
-    double φ = F.origin.coordinates.latitude * M_PI / 180;
-    double λ = F.origin.coordinates.longitude* M_PI / 180;
+    double φ = F.getdest().getlocation().getlat() * M_PI / 180;
+    double λ = F.getdest().getlocation().getlong()* M_PI / 180;
     // Converting degrees to radians
 
     double xO = cos(φ) * cos(λ);
@@ -39,10 +39,10 @@ Flight::getPoint(Flight F, int timern){
     // Because cos theta = a / h so a = surface distance and h = the earth's radius
     // I think that's why but not 100% sure lol
 
-    double distance = getdistance(F.destination.coordinates, F.origin.coordinates);
+    double distance = Point::getdistance(F.getdest().getlocation(), F.getorigin().getlocation());
     // not needed (?)
 
-    double Distancetravelled = Flight.aircraft.speed * (timern - F.liftoff);
+    double Distancetravelled = F.getaircraft().getspeed() * (timern - F.liftoff);
     //Velocity (km/h) x time spent = distance travelled
 
     double t = Distancetravelled/surfacedistance;
@@ -77,7 +77,7 @@ Flight::getPoint(Flight F, int timern){
     double A = std::atan2(currentPoint.z,(std::sqrt(std::pow(currentPoint.x,2)+(std::pow(currentPoint.y,2))))); //latitdude, radians
     double B = std::atan2(currentPoint.y, currentPoint.x); // longitude, radians
 
-    Point PT = {180/M_PI* A,180/M_PI*B}; // final result in degrees
+    Point PT(180/M_PI* A, 180/M_PI*B); // final result in degrees
 
     return PT;
 };

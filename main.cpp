@@ -87,7 +87,7 @@ void createplanes() { //creates planes and puts them in a random airport
 
 void initalflights() {
     int j;
-    for (int i = 0; i < 3; i++) {
+    for (int l = 0; l < 3; l++) {
         //finding plane
         for (int i = 0; i < Airports.size(); i++) {
             if (!Airports[i].planes.empty()) {
@@ -95,16 +95,15 @@ void initalflights() {
             }
         }
         //randomizing destination
-        int dest = i;
+        int dest = j;
         do {
             dest = randomInt(0,11);
-        } while (dest != i);
+        } while (dest != j);
 
         //creating flight
-        Flight temporary(std::to_string(randomInt(100000,999999)), Airports[dest] ,Airports[i], Airports[i].planes[0],allminutes,-1); //arrival is -1 for rn cuz we don't know time yet
+        Flight temporary(std::to_string(randomInt(100000,999999)), Airports[dest], Airports[j], Airports[j].planes[0],allminutes,-1); //arrival is -1 for rn cuz we don't know time yet
         temporary.getorigin().removeplane(temporary.getaircraft()); //removes and makes plane bool "flyings"/true
         plannedflights.push_back(temporary);
-        std::cout << "\n...Flights booked...";
     }
 
 }
@@ -168,7 +167,6 @@ void menu() { //menu printing function
 }
 
 void setup() { //simplification of setup
-    std::cout << "\n...Configuring...\n";
     readairports();
     createplanes();
     initalflights();
