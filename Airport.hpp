@@ -1,3 +1,6 @@
+#ifndef AIRPORT_HPP
+#define AIRPORT_HPP
+
 #include <iostream>
 //#include <algorthim>
 #include <string>
@@ -12,14 +15,18 @@ private:
     std::string city;
     std::string code;
     Point coordinates;
-    std::vector<Plane> planes; //planes at the airport
 public:
+    Airport(std::string n, std::string cty, std::string c, Point loc);//constructor
+
+    std::vector<Plane> planes; //planes at the airport
+
     std::string getname();
     std::string getcity();
     std::string getcode();
     Point getlocation();
-    Airport(std::string n, std::string cty, std::string c, Point loc);//constructor
+
     void addplane(Plane p);
     void removeplane(Plane p);
     void printplanes();
 };
+#endif

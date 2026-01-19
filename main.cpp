@@ -6,6 +6,7 @@
 #include "Airport.hpp"
 #include "Plane.hpp"
 #include "Point.hpp"
+#include "Flight.hpp"
 
 #include <iostream>
 #include <string>
@@ -14,12 +15,17 @@
 #include <fstream>
 #include <random>
 
-//global variables
-int hours, minutes, allminutes;
+//GLOBAL VARIABLES------------
+int hours, minutes, allminutes; //allminutes is ongoing counter that never resets, minutes and hours are for display
 time_t start = time(NULL); //inital timestamp for reference-- for start of program to reset simulated time
 std::vector<Airport> Airports;
+std::vector<Flight> plannedflights; 
+//-----------------------------
 
-//functions
+
+
+
+//FUNCTIONS -------------------
 
 int randomInt(int low, int high) { //Random number generator i found somewhere
     static std::random_device rd;
@@ -27,6 +33,8 @@ int randomInt(int low, int high) { //Random number generator i found somewhere
     std::uniform_int_distribution<> dist(low, high);
     return dist(gen);
 }
+
+    //SETUP FUNCTIONS===========
 
 void readairports() { //fills the vector of all the airports from the text file
     std::ifstream inFile;
@@ -78,8 +86,33 @@ void createplanes() { //creates planes and puts them in a random airport
 void setup() { //simplification of setup
     readairports();
     createplanes();
+    initalflights();
+}
+    //PLANE/FLIGHT FUNCTIONS
+
+void initalflights() {
+    int j;
+    for (int i = 0; i < 3; i++) {
+        //finding plane
+        for (int i = 0; i < Airports.size(); i++) {
+            if (!Airports[i].planes.empty()) {
+                j = i;
+            }
+        }
+        //randomizing destination
+        int dest = i;
+        do {
+            dest = randomInt(0,11);
+        } while (dest != i);
+
+        //creating flight
+        Flight temporary(randomInt(100000,999999), Airports[dest] ,Airports[i], Airports[i].planes[0],allminutes,-1); //arrival is -1 for rn cuz we don't know time yet
+        temporary.getorigin().removeplane(temporary.getaircraft()); //removes and makes plane bool "flyings"/true
+        plannedflights.push_back(temporary);
+    }
 }
 
+    //TIME FUNCTIONS============
 void printtime() {
     time_t rn = time(NULL);
     rn = rn-start;
@@ -105,6 +138,8 @@ void resettime() {
     int hours = minutes/60;
     minutes = minutes - (hours*60);
 }
+    //===============
+//------------------------------------------------------
 
 
 //main

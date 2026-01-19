@@ -20,7 +20,12 @@ private:
 
 public:
     Flight(std::string c, Airport d, Airport o, Plane p, int l, int a);//constructor;
-
-    int getTime(int distance, Plane plane);
+    
+    Airport getdest();
+    Airport getorigin();
+    std::string getcode();
+    Plane getaircraft();
+    int liftofftime();
+    int landingtime();
 };
 #endif
