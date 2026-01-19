@@ -227,7 +227,7 @@ void menu() {
         searchflightcode();
     }
     else if(num == 6){
-        std::cout<<"\nThanks for visiting! Book a flight soon!";
+        std::cout<<"\nThanks for visiting! Book a flight soon!\n\n";
         running = false;
     }
 }
@@ -246,8 +246,11 @@ void setup() {
 //main function
 int main(void){
     std::cout << "WELCOME STATEMENT (PLACEHOLDER)\n";
-    setup();
-    menu();
+
+    while (running) {
+        setup();
+        menu();
+    }
 
     return 0;
 }
