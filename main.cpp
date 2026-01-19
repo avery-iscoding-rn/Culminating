@@ -20,6 +20,7 @@ int hours, minutes, allminutes; //allminutes is ongoing counter that never reset
 time_t start = time(NULL); //inital timestamp for reference-- for start of program to reset simulated time
 std::vector<Airport> Airports;
 std::vector<Flight> plannedflights; 
+bool running = true; //bool if the program is running
 //-----------------------------
 
 
@@ -103,7 +104,9 @@ void initalflights() {
         Flight temporary(std::to_string(randomInt(100000,999999)), Airports[dest] ,Airports[i], Airports[i].planes[0],allminutes,-1); //arrival is -1 for rn cuz we don't know time yet
         temporary.getorigin().removeplane(temporary.getaircraft()); //removes and makes plane bool "flyings"/true
         plannedflights.push_back(temporary);
+        std::cout << "\n...Flights booked...";
     }
+
 }
 
     //TIME FUNCTIONS============
@@ -134,7 +137,38 @@ void resettime() {
 }
     //===============
 
+void menu() { //menu printing function
+    std::cout << "1. See flight schedule\n2. See live updates\n3. Find a plane\n4. Find an airport\n5. Exit\n-> ";
+    int num;
+    std::cin >> num;
+    //making sure number is valid
+    do {
+    std::cout << "\nPlease enter a number between 1-5\n";
+    std::cout << "1. See flight schedule\n2. See live updates\n3. Find a plane\n4. Find an airport\n5. Exit\n-> ";
+    } while (num > 6 || num < 1);
+
+    if (num == 1) { // FLIGHT SCHEDULE
+        std::cout << "placeholder";
+
+    } else if (num == 2) { //SEE LIVE UPDATES
+        std::cout << "placeholder";
+
+    } else if (num == 3) { //FIND A PLANE
+        std::cout << "placeholder";
+
+    } else if (num == 4) { //FIND AN AIRPORT
+        std::cout << "placeholder";
+
+    } else { //EXIT
+        std::cout << "placeholder";
+        running = false;
+
+    }
+
+}
+
 void setup() { //simplification of setup
+    std::cout << "\n...Configuring...\n";
     readairports();
     createplanes();
     initalflights();
@@ -146,6 +180,12 @@ void setup() { //simplification of setup
 //main
 int main(void){
     setup();
+    std::cout << "Welcome to the airspace simulator!\n";
+
+    //while (running) {
+        resettime();
+        menu();
+    //}
 
     return 0;
 }

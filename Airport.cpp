@@ -36,6 +36,18 @@ void Airport::removeplane(Plane p) {
     p.takeoff(); //bool == true (flying) becuase its leaving the airport
 }
 
+// RECURSION EXAMPLE //indexes planes array until plane is found or else false is returned
+bool Airport::contains(Plane p, int i) {
+    if (i == planes.size()-1) {
+        return false;
+    }
+    if (planes[i].getmodel() == p.getmodel()) {
+        return true;
+    }
+    return contains(p, i+1);
+}
+
+
 void Airport::printplanes() {
     if (!planes.empty()) {
         for (int i = 0; i < planes.size(); i++) {

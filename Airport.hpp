@@ -28,5 +28,6 @@ public:
     void addplane(Plane p);
     void removeplane(Plane p);
     void printplanes();
+    bool contains(Plane p, int i);
 };
 #endif
