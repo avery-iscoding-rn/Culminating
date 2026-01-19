@@ -10,12 +10,12 @@ struct coordinates {
 }; // longitude and latitude angles must be converted to an [x,y,z] vector
 
 //finds current location of a plane en route between two different airport depending on the current time
-Point Flight::getPoint(Flight F, int timern){
+Point Flight::getPoint(int timern){
 
     int R = 6371; // earth's radius
 
-    double φ = F.getdest().getlocation().getlat() * M_PI / 180;
-    double λ = F.getdest().getlocation().getlong()* M_PI / 180;
+    double φ = destination.getlocation().getlat() * M_PI / 180;
+    double λ = destination.getlocation().getlong()* M_PI / 180;
     // Converting degrees to radians
 
     double xO = cos(φ) * cos(λ);
@@ -23,8 +23,8 @@ Point Flight::getPoint(Flight F, int timern){
     double zO = sin(φ);
     // Using degrees in radians to a vector (origin)
 
-    double φ2 = F.getdest().getlocation().getlat()* M_PI / 180;
-    double λ2 = F.getdest().getlocation().getlong()* M_PI / 180;
+    double φ2 = destination.getlocation().getlat()* M_PI / 180;
+    double λ2 = destination.getlocation().getlong()* M_PI / 180;
     // Converting degrees to radians
 
     double xD = cos(φ2) * cos(λ2);
@@ -40,10 +40,10 @@ Point Flight::getPoint(Flight F, int timern){
     // Because cos theta = a / h so a = surface distance and h = the earth's radius
     // I think that's why but not 100% sure lol
 
-    double distance = Point::getdistance(F.getdest().getlocation(), F.getorigin().getlocation());
+    double distance = Point::getdistance(destination.getlocation(), destination.getlocation());
     // not needed (?)
 
-    double Distancetravelled = F.getaircraft().getspeed() * (timern - F.liftoff);
+    double Distancetravelled = aircraft.getspeed() * (timern - liftoff);
     //Velocity (km/h) x time spent = distance travelled
 
     double t = Distancetravelled/surfacedistance;
