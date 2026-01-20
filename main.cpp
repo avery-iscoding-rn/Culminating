@@ -54,7 +54,7 @@ void readairports() {
 
     for (int i = 0; i < num; i++) {
         std::string name, city, code;
-        int lat, log;
+        double lat, log;
         
         getline(inFile, name);
         getline(inFile, city);
@@ -147,9 +147,9 @@ void initalflights() {
 //creates scheduled flights
 void scheduleflights() {
     if (plannedflights.empty()) { //if no planned flights
-        initalflights()
+        initalflights();
     } else { //if there are planned flights
-        std::cout << "PLACEHOLDER"
+        std::cout << "PLACEHOLDER";
         //AURORA I WILL FINISH THIS FUNCITON AFTER SCHOOL OKAY-- IT WILL FILL THE PLANNED FLIGHT VECTOR WITH FLIGHTS
     }
 }
@@ -346,9 +346,18 @@ void findplane(){
                 std::cout<< "\nPlane speed: " << P.getspeed();
                 if (P.status()== true){
                     std::cout<< "\nStatus: Currently flying";
+                    std::cout<< "\nLocation: " << "[" << P.getcoordinates().getlat() << " , " << P.getcoordinates().getlong()<<"]"; 
                 }
                 else{
-                    std::cout<< "\nLocation: " << "[" << P.getcoordinates().getlat() << " , " << P.getcoordinates().getlong()<<"]"; 
+                    //FUNCTION NEEDA TO BE MADE THEN UNCOMMENT
+                    std::cout<< "\nLocation: ";
+                    // if (P.atorigin()== true){
+                    //     std::cout << [" << P.getflight().getorigin().getlat(); << " , " << P.getflight().getorigin().getlong()<<"]"; 
+                        
+                    // }
+                    // else if (P.atdest() == true){
+                    //     std::cout<< P.getflight().getdest();
+                    // }
                 }
             }
         }

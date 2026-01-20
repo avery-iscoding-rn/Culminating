@@ -5,7 +5,7 @@ Flight::Flight(std::string c, Airport& d, Airport& o, Plane p, int l, int a)
 
 struct coordinates {
     double x;
-    double y;
+    double y; 
     double z;
 }; // longitude and latitude angles must be converted to an [x,y,z] vector
 
@@ -14,8 +14,8 @@ Point Flight::getPoint(int timern){
 
     int R = 6371; // earth's radius
 
-    double φ = destination->getlocation().getlat() * M_PI / 180;
-    double λ = destination->getlocation().getlong()* M_PI / 180;
+    double φ = origin->getlocation().getlat() * M_PI / 180;
+    double λ = origin->getlocation().getlong()* M_PI / 180;
     // Converting degrees to radians
 
     double xO = cos(φ) * cos(λ);
@@ -35,7 +35,7 @@ Point Flight::getPoint(int timern){
     double angle = (xO*xD)+(yO*yD)+(zO*zD);
     // Dot product to find angle between 2 location vectors
 
-    double surfacedistance = std::acos(R * angle);
+    double surfacedistance = R * std::acos(angle);
     // Multiplying the cos of this angle by the earth's radius will give us the surface distance between the 2 points
     // Because cos theta = a / h so a = surface distance and h = the earth's radius
     // I think that's why but not 100% sure lol

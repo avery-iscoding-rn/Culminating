@@ -1,1 +1,6 @@
-searchbyflight code returns 'nan , nan' instead of coordinates
+function for is plane at origin / destination
+- gets origin and dsetination
+*GETFLIGHT function in relation to plane
+
+add flight code to plane 
+work on pane

@@ -1,5 +1,6 @@
 #include "Plane.hpp"
 
+
 Plane::Plane(std::string n, Point loc, bool f, int cp, int s)
     :name(n), coordinates(loc), flying(f), capacity(cp), speed(s) {}
 
