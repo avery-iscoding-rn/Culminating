@@ -186,7 +186,7 @@ void searchflightcode(){
         //finding plane
         std::string planestatus;
         resettime(false);
-        Point currentlocation = temp.getPoint(rn);
+        Point currentlocation = temp.getaircraft().getPoint(rn);
 
         //if close to Airport of origin, then display departing soon
         if ((currentlocation.getlat() >= temp.getorigin().getlocation().getlat()-1 && currentlocation.getlat() <= temp.getorigin().getlocation().getlat()+1) && (currentlocation.getlong() >= temp.getorigin().getlocation().getlong()-1 && currentlocation.getlong() <= temp.getorigin().getlocation().getlong()+1)) {
@@ -198,7 +198,7 @@ void searchflightcode(){
         }
         
         //if close to an airport
-        if (planestatus == "Arrived" or "Departing Soon"){
+        if (planestatus == "Arrived" | planestatus =="Departing Soon"){
             std::cout<<"\nStatus: " << planestatus;
 
         //if in the air
