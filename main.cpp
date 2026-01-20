@@ -117,6 +117,7 @@ void initalflights() {
         
         std::cout << "\n" << temporary.getcode();
         plannedflights.push_back(temporary);
+        
     }
 }
 
