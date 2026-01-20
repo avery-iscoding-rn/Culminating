@@ -16,7 +16,8 @@
 #include <random>
 
 //GLOBAL VARIABLES------------
-int hours, minutes, allminutes; //allminutes is ongoing counter that never resets, minutes and hours are for display
+int hours, minutes, realhours; //allminutes is ongoing counter that never resets, minutes and hours are for display
+int allminutes;
 time_t start = time(NULL); //inital timestamp for reference-- for start of program to reset simulated time
 time_t rn;
 std::vector<Airport> Airports;
@@ -36,7 +37,6 @@ int randomInt(int low, int high) {
     return dist(gen);
 }
 
-    //SETUP FUNCTIONS===========
 //fills the vector of all the airports from the text file
 void readairports() { 
     std::ifstream inFile;
@@ -84,7 +84,6 @@ void createplanes() {
     Airports[num].addplane(Boeing777);
 }
 
-    //PLANE/FLIGHT FUNCTIONS
 //creates an inital flight for each plane to start the schedule (vector of flights)
 void initalflights() {
     int j;
@@ -108,36 +107,39 @@ void initalflights() {
     }
 }
 
-    //TIME FUNCTIONS============
-//Prints time in HH:MM -- starts at zero though
-void printtime() {
-    time_t rn = time(NULL);
-    rn = rn-start;
-
-    //converting into readable format
-    int seconds = rn%60;
-    int allminutes = rn/60;
-    int minutes = rn/60;
-    int hours = minutes/60;
-    minutes = minutes - (hours*60);
-
-    printf("Current sim, time is %02d:%02d\n", minutes, seconds);
-}
-//===============
-
 //refreshes time (boht HH:MM and allminutes which is just and ongoing counter of the seconds since program started)
-void resettime() {
-        rn = time(NULL);
+void resettime(bool print) {
+    rn = time(NULL);
     rn = rn-start;
 
     //converting into readable format
-    int seconds = rn%60;
-    int minutes = rn/60;
-    int allminutes = rn/60;
-    int hours = minutes/60;
-    minutes = minutes - (hours*60);
+    allminutes = rn; //all seconds
+
+    minutes = rn%60; //irl seconds
+    hours = rn/60; //irl minutes
+
+    realhours = hours/60; //removing real hours
+    hours = hours - (realhours*60);
+
+    if (print) {
+        std::cout << "\n";
+        printf("January 1st, 2075, %02d:%02d\n", hours, minutes);
+    }
+
+    //Stopping the clock at 24 hours
+    if (hours > 23) {
+        running = false;
+        std::cout << "\n\n The day is over! Thanks for visiting!";
+    }
 }
 
+//converts AND PRINTS an allminutes value into the 24 hour HH:MM clock string
+void convert(int allmin) {
+    int h = allmin/60;
+    int m = allmin%60;
+
+    printf("%02d:%02d\n", h, m);
+}
 
 //searches vectors for the given flight code (basically linear search)
 void searchflightcode(){
@@ -168,7 +170,7 @@ void searchflightcode(){
 
         //finding plane
         std::string planestatus;
-        resettime();
+        resettime(false);
         Point currentlocation = temp.getPoint(rn);
 
         //if close to Airport of origin, then display departing soon
@@ -196,7 +198,6 @@ void searchflightcode(){
 
 //prints menu, processes user input (also validates it), then runs subsequent function
 void menu() {
-
 
     //std::cout << "\nMENU:\n1. See flight schedule\n2. See live updates\n3. Find a plane\n4. Find an airport\n5. Search by flight code \n6. Exit\n-> ";
     int num = 0;
@@ -243,12 +244,16 @@ void setup() {
 //------------------------------------------------------
 
 
+
+
 //main function
 int main(void){
     std::cout << "WELCOME STATEMENT (PLACEHOLDER)\n";
+    setup();
 
+    int test = 0;
     while (running) {
-        setup();
+        resettime(true);
         menu();
     }
 
