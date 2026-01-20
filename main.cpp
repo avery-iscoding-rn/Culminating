@@ -91,18 +91,27 @@ void initalflights() {
         //finding plane
         for (int h = 0; h < Airports.size(); h++) {
             if (!Airports[h].planes.empty()) {
-                j = h;
+                for (int k = 0; k < Airports[h].planes.size(); k++){
+                    if (!Airports[h].planes[h].status()) {
+                        j = h;
+                    }
+                } 
             }
         }
         //randomizing destination
         int dest = j;
         do {
             dest = randomInt(0,11);
-        } while (dest != j);
+        } while (dest == j);
 
         //creating flight
         Flight temporary(std::to_string(randomInt(100000,999999)), Airports[dest] ,Airports[j], Airports[j].planes[0],allminutes,-1); //arrival is -1 for rn cuz we don't know time yet
-        temporary.getorigin().removeplane(temporary.getaircraft()); //removes and makes plane bool "flyings"/true
+        
+        temporary.getorigin().removeplane(temporary.getaircraft()); //removes and makes plane bool "flying"/true
+        std::cout << "Aircraft: " << temporary.getaircraft().getmodel() << ",\n Planes at origin: ";
+        temporary.getorigin().printplanes();
+        
+        std::cout << "\n" << temporary.getcode();
         plannedflights.push_back(temporary);
     }
 }
@@ -122,7 +131,7 @@ void resettime(bool print) {
     hours = hours - (realhours*60);
 
     if (print) {
-        std::cout << "\n";
+        std::cout << "\n\n------------------------\n";
         printf("January 1st, 2075, %02d:%02d\n", hours, minutes);
     }
 
@@ -143,7 +152,7 @@ void convert(int allmin) {
 
 //searches vectors for the given flight code (basically linear search)
 void searchflightcode(){
-    std::cout << "Enter the code of the flight you are looking for: ";
+    std::cout << "\nEnter the code of the flight you are looking for: ";
     std::string code;
     std::cin >> code;
     bool doesexist = false;
@@ -165,8 +174,9 @@ void searchflightcode(){
 
         //printing data
         std::cout << "\nFlight: " << temp.getorigin().getcode() << " - > " << temp.getdest().getcode();
-        std::cout<< "\nDeparting from:  " << temp.getorigin().getcity();
-        std::cout<< "\nHeaded to:  " << temp.getdest().getcity();
+        std::cout<< "\nDeparting from: " << temp.getorigin().getname() << ", " << temp.getorigin().getcity();
+        std::cout<< "\nHeading to: " << temp.getdest().getname() << ", " << temp.getdest().getcity();
+        std::cout << "\nAircraft: " << temp.getaircraft().getmodel();
 
         //finding plane
         std::string planestatus;
@@ -184,13 +194,13 @@ void searchflightcode(){
         
         //if close to an airport
         if (planestatus == "Arrived" or "Departing Soon"){
-            std::cout<<"\nStatus:   " << planestatus;
+            std::cout<<"\nStatus: " << planestatus;
 
         //if in the air
         } else {
             std::cout << "\nStatus: Currently flying";
             Point location = temp.getPoint(rn); //current location
-            std::cout << "\nCurrent location:   "<< location.getlat() << " , " << location.getlong();
+            std::cout << "\nCurrent location: "<< location.getlat() << ", " << location.getlong();
         }
     }    
 }
@@ -211,6 +221,7 @@ std::vector<Flight> findFlights(Airport A, std::string DorA){
             }
         }
     }
+    return flightsFromAirport;
 }
 
 void searchairport(){
@@ -228,7 +239,7 @@ void searchairport(){
     }
 
     if (!doesexist) {
-        std::cout << "\nAirport not found.";
+        std::cout << "\nAirport not found.\nEnsure you enter the code in capital letters.";
     }
 
     else{

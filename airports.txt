@@ -1,10 +1,10 @@
 12
-Pearson international airport
+Pearson International Airport
 Toronto
 YYZ
 43.6798
 79.6284
-John F Kennedy Intl airport
+John F Kennedy Intl Airport
 New York
 JFK
 40.6446
@@ -49,8 +49,8 @@ Djibouti
 JIB
 11.5521
 43.1497
-Addis Ababa
 Bole Addis Ababa International Airport
+Addis Ababa
 ADD
 8.9838
 38.7963

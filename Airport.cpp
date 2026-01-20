@@ -28,7 +28,7 @@ void Airport::addplane(Plane p) { //plane is at the airport, it is no longer fly
 void Airport::removeplane(Plane p) {
     std::vector<Plane> temp;
     for (int i = 0; i < planes.size(); i++) { //create a new vector, duplicates planes except for the one we're deleting
-        if (planes[i].getcapacity() != p.getcapacity()) { //each plane has a unique capacity so comparing them works well
+        if (planes[i].getmodel() != p.getmodel()) { //each plane has a unique capacity so comparing them works well
             temp.push_back(planes[i]);
         }
     }
