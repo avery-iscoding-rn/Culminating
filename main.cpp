@@ -213,7 +213,7 @@ void searchflightcode(){
         } else {
             std::cout << "\nStatus: Currently flying";
             resettime(false);
-            std::cout << "\nCurrent location: "<< temp.getPoint(rn).getlat() << ", " << temp.getPoint(rn).getlong();
+            std::cout << "\nCurrent location: "<< "["<<temp.getPoint(rn).getlat() << " , " << temp.getPoint(rn).getlong()<<"]";
         }
     }    
 }
