@@ -186,7 +186,7 @@ void searchflightcode(){
         //finding plane
         std::string planestatus;
         resettime(false);
-        Point currentlocation = temp.getaircraft().getPoint(rn);
+        Point currentlocation = temp.getPoint(rn);
 
         //if close to Airport of origin, then display departing soon
         if ((currentlocation.getlat() >= temp.getorigin().getlocation().getlat()-1 && currentlocation.getlat() <= temp.getorigin().getlocation().getlat()+1) && (currentlocation.getlong() >= temp.getorigin().getlocation().getlong()-1 && currentlocation.getlong() <= temp.getorigin().getlocation().getlong()+1)) {
@@ -204,8 +204,8 @@ void searchflightcode(){
         //if in the air
         } else {
             std::cout << "\nStatus: Currently flying";
-            Point location = temp.getPoint(rn); //current location
-            std::cout << "\nCurrent location: "<< location.getlat() << ", " << location.getlong();
+            resettime(false);
+            std::cout << "\nCurrent location: "<< temp.getPoint(rn).getlat() << ", " << temp.getPoint(rn).getlong();
         }
     }    
 }
@@ -269,7 +269,8 @@ void searchairport(){
             std::cout<<"\n";
 
 
-        // arrivals 
+        // arrivals
+        for (Flight F : findFlights(Airports[searchindex], "A") ) 
         std::cout<< "\n\nArrivals:  " << "-----"; 
         std::cout <<"\nCode         |           Destination          |        Status/Location         |           Departure Time          |           Arrival Time";
         for (Flight F : findFlights(Airports[searchindex], "A") ){
@@ -288,6 +289,25 @@ void searchairport(){
     }
 }
 
+}
+
+void findplane(){
+    std::cout << "Enter the plane model (example: Boeing737):    ";
+        std::string plane;
+        std::cin>> plane;
+        for (Plane P: Planes){
+            if (P.getmodel() == plane){
+                std::cout<< "\n"<< plane;
+                std::cout<<"\nCapactity:    "<< P.getcapacity();
+                std::cout<< "\nPlane speed:     " << P.getspeed();
+                if (P.status()== true){
+                    std::cout<< "\nStatus:    Currently flying";
+                }
+                else{
+                    std::cout<< "\nLocation:       " << P.getcoordinates(); 
+                }
+            }
+        }
 }
 
 //prints menu, processes user input (also validates it), then runs subsequent function
@@ -313,7 +333,8 @@ void menu() {
         std::cout << "placeholder";
 
     } else if (num == 3) { //FIND A PLANE
-        std::cout << "placeholder";
+        findplane();
+
         
     } else if (num == 4) { //FIND AN AIRPORT
         searchairport();
