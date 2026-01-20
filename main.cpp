@@ -14,6 +14,8 @@
 #include <ctime>
 #include <fstream>
 #include <random>
+#include <algorithm>
+
 
 //GLOBAL VARIABLES------------
 int hours, minutes, realhours; //allminutes is ongoing counter that never resets, minutes and hours are for display
@@ -97,26 +99,28 @@ void createplanes() {
 
 //creates an inital flight for each plane to start the schedule (vector of flights)
 void initalflights() {
-    //finding planes
+    //std::cout << "\ninital flights";
+    //finding planes which airport each plane is at
     int j;
-    for (int i = 0; i < 3; i++) {
-        //finding plane
-        for (int h = 0; h < Airports.size(); h++) {
-            if (!Airports[h].planes.empty()) {
-                for (int k = 0; k < Airports[h].planes.size(); k++){
-                    if (!Airports[h].planes[k].status()) {
-                        j = h;
-                    }
-                } 
+    
+    for (int p = 0; p < Planes.size(); p++) { //for every plane
+        //std::cout << "\nplane number " << p << ", " << Planes[p].getmodel();
+        //std::cout << "\nplanes # " << p;
+        for (int a = 0; a < Airports.size(); a++) { //for every airport
+            //std::cout << "\nairports # " << a;
+            if (Airports[a].contains(Planes[p], 0) != -1) {// if plane is in this airport
+                j = a;
+                    //std::cout << "\nfound in " << Airports[a].getname();
             }
         }
-        
         //randomizing destination
         int dest = j;
         do {
             dest = randomInt(0,11);
         } while (dest == j);
-
+        //std::cout << "\norigin" << Airports[j].getname();
+        //std::cout << "\ndesination" << Airports[dest].getname();
+        
         //creating flight
         //randomizing flight num and fact checking it doesnt already exist.
         bool repeated = false;
@@ -134,15 +138,16 @@ void initalflights() {
         //creating instance of flight
         //estimated arrival time
         int atime; 
-        atime = Point::getdistance(Airports[dest].getlocation(),Airports[j].getlocation())/Airports[j].planes[0].getspeed(); //time is distance/speed
-        
-        Flight temporary(std::to_string(ID), Airports[dest] ,Airports[j], Airports[j].planes[0],allminutes,allminutes + (60*atime)); //tracking time + (60(to convert to minutes) x estimiated time) --> tracked estimated time (in allminutes)
-        std::cout << "\nflight created";
+        atime = Point::getdistance(Airports[j].getlocation(),Airports[dest].getlocation())/Planes[p].getspeed(); //time is distance/speed
+        std::cout << "\n" << Point::getdistance(Airports[j].getlocation(),Airports[dest].getlocation()) << " / " << Planes[p].getspeed() << " = " << atime;
+        Flight temporary(std::to_string(ID), Airports[dest] ,Airports[j], Airports[j].planes[0],allminutes, allminutes + (60*atime)); //tracking time + (60(to convert to minutes) x estimiated time) --> tracked estimated time (in allminutes)
+        //std::cout << "\nflight created";
         std::cout << "\n" << temporary.getcode();
         plannedflights.push_back(temporary);
-        
-    }
+    } 
 }
+
+
 
 //creates scheduled flights
 void scheduleflights() {
@@ -221,11 +226,15 @@ void searchflightcode(){
 
         //printing data
         std::cout << "\nFlight: " << temp.getorigin().getcode() << " - > " << temp.getdest().getcode();
-        std::cout<< "\nDeparting from: " << temp.getorigin().getname() << ", " << temp.getorigin().getcity();
-        std::cout<< "\nHeading to: " << temp.getdest().getname() << ", " << temp.getdest().getcity();
+        std::cout << "\nDeparting from: " << temp.getorigin().getname() << ", " << temp.getorigin().getcity();
+        std::cout << "\nDeparture time : ";
+        convert(temp.liftofftime());
+        std::cout << "\nHeading to: " << temp.getdest().getname() << ", " << temp.getdest().getcity();
+        std::cout << "\nEstimated arrival time : ";
+        convert(temp.landingtime());
         std::cout << "\nAircraft: " << temp.getaircraft().getmodel();
 
-        //finding plane
+    //finding plane
         std::string planestatus;
         resettime(false);
         Point currentlocation = temp.getPoint(rn);

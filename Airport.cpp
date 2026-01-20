@@ -25,30 +25,19 @@ void Airport::addplane(Plane p) { //plane is at the airport, it is no longer fly
     p.land();
 }
 
-// std::vector<Plane> temp;
-// if (!planes.empty()) {
-//     for (int i = 0; i < planes.size(); i++) { //create a new vector, duplicates planes except for the one we're deleting
-//         std::cout << "\n\nitem" << i;
-//         if (planes[i].getmodel() == p.getmodel()) { //each plane has a unique capacity so comparing them works well
-//             std::cout << "\n found target plane, " << p.getmodel();
-//         } else {
-    //             std::cout << ": " << planes[i].getmodel() << " (which is not equal to " << p.getmodel() << ")";
-    //             temp.push_back(planes[i]);
-    //             std::cout << "added it to temp\n";   
-    //         }
-    //     }
-    //     planes = temp; //turn planes into the temp --> target plane has been deleted
-    //     p.takeoff(); //bool == true (flying) becuase its leaving the airport
-    //     std::cout << p.getmodel() << "has taken off";
-    // }
-    // RECURSION EXAMPLE //indexes planes array until plane is found or else false is returned
-    bool Airport::contains(Plane p, int i) {
-        if (i == planes.size()-1) {
-            return false;
-        }
-    if (planes[i].getmodel() == p.getmodel()) {
-        return true;
+
+// RECURSION EXAMPLE 
+//indexes planes array until plane is found or else -1 is returned
+int Airport::contains(Plane p, int i) {
+    if (i == planes.size()) {
+        //std::cout << "\ngot to end of vector, plane not found";
+        return -1;
     }
+    if (planes[i].getmodel() == p.getmodel()) {
+        //std::cout << "\nfound plane";
+        return i;
+    }
+    //std::cout << "\n moving on to next plane";
     return contains(p, i+1);
 }
 

@@ -31,7 +31,7 @@ public:
     void removeplane(Plane p);
     //prints all planes within an airport (prints "no planes" if empty)
     void printplanes();
-    // RECURSION EXAMPLE //indexes planes array until plane is found or else false is returned
-    bool contains(Plane p, int i);
+    // RECURSION EXAMPLE //indexes planes array until plane is found or else -1 is returned
+    int contains(Plane p, int i);
 };
 #endif
