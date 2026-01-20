@@ -7,6 +7,10 @@ std::string Plane::getmodel() {
     return name;
 }
 
+Point Plane::getcoordinates(){
+    return coordinates;
+}
+
 int Plane::getcapacity() {
     return capacity;
 }

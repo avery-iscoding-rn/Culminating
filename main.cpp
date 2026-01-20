@@ -195,6 +195,83 @@ void searchflightcode(){
     }    
 }
 
+std::vector<Flight> findFlights(Airport A, std::string DorA){
+
+    std::vector<Flight> flightsFromAirport;
+
+    for (Flight F: Flights){
+        if (DorA == "A"){
+            if (F.getdest() == A){
+                flightsFromAirport.push_back(F);
+            }
+        }
+        else if (DorA == "D"){
+            if (F.getorigin() == A){
+                flightsFromAirport.push_back(F); 
+            }
+        }
+    }
+}
+
+void searchairport(){
+    std::cout << "Enter the 3 letter code of the airport you are looking for: ";
+    std::string code;
+    std::cin >> code;
+    bool doesexist = false;
+    int searchindex;
+    
+    for (int i = 0; i < Airports.size(); i ++){
+        if (Airports[i].getcode() == code){
+            doesexist = true;
+            searchindex = i;
+        }
+    }
+
+    if (!doesexist) {
+        std::cout << "\nAirport not found.";
+    }
+
+    else{
+        std::cout<< "\nAirport: " << Airports[i].getname();
+        std::cout << "\nCity:   " << Airports[i].getcity();
+        
+        // departures
+        std::cout<< "\nDepartures:  " << "-----"; 
+        std::cout <<"\nCode         |           Destination          |        Status/Location         |           Departure Time          |           Arrival Time";
+        for (Flight F : findFlights(Airports[i], "D") ){
+            std::cout<<"\n"<< F.getcode()<<"                           ;"
+            std::cout<<"\n"<< F.getdest().getcode() << ":"<< F.getdest().getlocation<<"     ";
+            if(F.aircraft.getcoordinates() == F.getdest.getlocation()){
+                std::cout<< "Arrived                 ";
+            }
+            else if (F.aircraft.getcoordinates() == F.getorigin.getlocation()){
+                std::cout<< "Departing soon.         ";
+            }
+            std::cout<< "["<<F.getPoint().getlat()<<" , "<<F.getPoint().getlong()<<"]       ";
+            std::cout<< flight.liftofftime() << "                   "<< flight.landingtime();
+            std::cout<<"\n";
+
+        }
+
+        // arrivals 
+        std::cout<< "\n\nArrivals:  " << "-----"; 
+        std::cout <<"\nCode         |           Destination          |        Status/Location         |           Departure Time          |           Arrival Time";
+        for (Flight F : findFlights(Airports[i], "A") ){
+            std::cout<<"\n"<< F.getcode()<<"                           ;"
+            std::cout<<"\n"<< F.getorigin().getcode() << ":"<< F.getorigin().getlocation<<"     ";
+            if(F.aircraft.getcoordinates() == F.getorigin.getlocation()){
+                std::cout<< "Arrived                 ";
+            }
+            else if (F.aircraft.getcoordinates() == F.getorigin.getlocation()){
+                std::cout<< "Departing soon.         ";
+            }
+            std::cout<< "["<<F.getPoint().getlat()<<" , "<<F.getPoint().getlong()<<"]       ";
+            std::cout<< flight.liftofftime() << "                   "<< flight.landingtime();
+
+        }
+    }
+
+}
 
 //prints menu, processes user input (also validates it), then runs subsequent function
 void menu() {
@@ -222,7 +299,7 @@ void menu() {
         std::cout << "placeholder";
         
     } else if (num == 4) { //FIND AN AIRPORT
-        std::cout << "placeholder";
+        searchairport();
         
     } else if (num == 5){ // search by flight code
         searchflightcode();
