@@ -1,0 +1,1 @@
+searchbyflight code returns 'nan , nan' instead of coordinates
