@@ -83,6 +83,35 @@ Point Flight::getPoint(int timern){
     return PT;
 };
 
+//constant updating 
+void Flight::fly(bool rweflying, int timern) {
+    if (rweflying) {
+        aircraft.getcoordinates() = getPoint(timern);
+    } 
+}
+
+//returns true is plane location is close enough to airport origin location
+bool Flight::atorigin(Point mycoordinates) {
+    if ((mycoordinates.getlat() >= origin->getlocation().getlat()-1 && mycoordinates.getlat() <= origin->getlocation().getlat()+1) && (mycoordinates.getlong() >= origin->getlocation().getlong()-1 && mycoordinates.getlong() <= origin->getlocation().getlong()+1)){
+        aircraft.takeoff(); //starts flight;
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+//returns true if plane location is close enough to 
+bool Flight::atdest(Point mycoordinates) {
+    if ((mycoordinates.getlat() >= destination->getlocation().getlat()-1 && mycoordinates.getlat() <= destination->getlocation().getlat()+1) && (mycoordinates.getlong() >= destination->getlocation().getlong()-1 && mycoordinates.getlong() <= destination->getlocation().getlong()+1)){
+        aircraft.land();//ends flight
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 Airport& Flight::getdest() {
     return *destination;
 }

@@ -186,7 +186,7 @@ void searchflightcode(){
         //finding plane
         std::string planestatus;
         resettime(false);
-        Point currentlocation = temp.getaircraft().getPoint(rn);
+        Point currentlocation = temp.getPoint(rn);
 
         //if close to Airport of origin, then display departing soon
         if ((currentlocation.getlat() >= temp.getorigin().getlocation().getlat()-1 && currentlocation.getlat() <= temp.getorigin().getlocation().getlat()+1) && (currentlocation.getlong() >= temp.getorigin().getlocation().getlong()-1 && currentlocation.getlong() <= temp.getorigin().getlocation().getlong()+1)) {
@@ -349,6 +349,9 @@ int main(void){
     while (running) {
         resettime(true);
         menu();
+        for (int i = 0; i < plannedflights.size(); i++) {
+            plannedflights[i].fly(plannedflights[i].getaircraft().status(),rn);
+        }
     }
 
     return 0;

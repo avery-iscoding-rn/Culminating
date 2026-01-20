@@ -33,6 +33,11 @@ public:
     Plane getaircraft();
     int liftofftime();
     int landingtime();
+
+    void fly(bool rweflying, int timern);
+    bool atorigin(Point mycoordinates);
+    bool atdest(Point mycoordinates);
+
 };
 
 struct coordinates;
