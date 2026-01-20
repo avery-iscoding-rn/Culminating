@@ -199,14 +199,14 @@ std::vector<Flight> findFlights(Airport A, std::string DorA){
 
     std::vector<Flight> flightsFromAirport;
 
-    for (Flight F: Flights){
+    for (Flight F: flightsFromAirport){
         if (DorA == "A"){
-            if (F.getdest() == A){
+            if (F.getdest().getcode()== A.getcode()){
                 flightsFromAirport.push_back(F);
             }
         }
         else if (DorA == "D"){
-            if (F.getorigin() == A){
+            if (F.getorigin().getcode() == A.getcode()){
                 flightsFromAirport.push_back(F); 
             }
         }
@@ -232,44 +232,45 @@ void searchairport(){
     }
 
     else{
-        std::cout<< "\nAirport: " << Airports[i].getname();
-        std::cout << "\nCity:   " << Airports[i].getcity();
+        std::cout<< "\nAirport: " << Airports[searchindex].getname();
+        std::cout << "\nCity:   " << Airports[searchindex].getcity();
         
         // departures
         std::cout<< "\nDepartures:  " << "-----"; 
         std::cout <<"\nCode         |           Destination          |        Status/Location         |           Departure Time          |           Arrival Time";
-        for (Flight F : findFlights(Airports[i], "D") ){
-            std::cout<<"\n"<< F.getcode()<<"                           ;"
-            std::cout<<"\n"<< F.getdest().getcode() << ":"<< F.getdest().getlocation<<"     ";
-            if(F.aircraft.getcoordinates() == F.getdest.getlocation()){
+        for (Flight F : findFlights(Airports[searchindex], "D") ){
+            std::cout<<"\n"<< F.getcode()<<"                           ";
+            std::cout<<"\n"<< F.getdest().getcode() << ":"<< F.getdest().getcity()<<"     ";
+            if(F.getaircraft().getcoordinates().getlat() == F.getdest().getlocation().getlat() && F.getaircraft().getcoordinates().getlong() == F.getdest().getlocation().getlong()){
                 std::cout<< "Arrived                 ";
             }
-            else if (F.aircraft.getcoordinates() == F.getorigin.getlocation()){
+            else if ((F.getaircraft().getcoordinates().getlat() == F.getorigin().getlocation().getlat()) && (F.getaircraft().getcoordinates().getlong() == F.getorigin().getlocation().getlong() )){
                 std::cout<< "Departing soon.         ";
             }
-            std::cout<< "["<<F.getPoint().getlat()<<" , "<<F.getPoint().getlong()<<"]       ";
-            std::cout<< flight.liftofftime() << "                   "<< flight.landingtime();
+            resettime(false);
+            std::cout<< "["<<F.getPoint(rn).getlat()<<" , "<<F.getPoint(rn).getlong()<<"]       ";
+            std::cout<< F.liftofftime() << "                   "<< F.landingtime();
             std::cout<<"\n";
 
-        }
 
         // arrivals 
         std::cout<< "\n\nArrivals:  " << "-----"; 
         std::cout <<"\nCode         |           Destination          |        Status/Location         |           Departure Time          |           Arrival Time";
-        for (Flight F : findFlights(Airports[i], "A") ){
-            std::cout<<"\n"<< F.getcode()<<"                           ;"
-            std::cout<<"\n"<< F.getorigin().getcode() << ":"<< F.getorigin().getlocation<<"     ";
-            if(F.aircraft.getcoordinates() == F.getorigin.getlocation()){
+        for (Flight F : findFlights(Airports[searchindex], "A") ){
+            std::cout<<"\n"<< F.getcode()<<"                           ";
+            std::cout<<"\n"<< F.getorigin().getcode() << ":"<< F.getorigin().getcity()<<"     ";
+            if(F.getaircraft().getcoordinates().getlat() == F.getdest().getlocation().getlat() && F.getaircraft().getcoordinates().getlong() == F.getdest().getlocation().getlong()){
                 std::cout<< "Arrived                 ";
             }
-            else if (F.aircraft.getcoordinates() == F.getorigin.getlocation()){
+            else if (F.getaircraft().getcoordinates().getlat() == F.getorigin().getlocation().getlat() && F.getaircraft().getcoordinates().getlong() == F.getorigin().getlocation().getlong()){
                 std::cout<< "Departing soon.         ";
             }
-            std::cout<< "["<<F.getPoint().getlat()<<" , "<<F.getPoint().getlong()<<"]       ";
-            std::cout<< flight.liftofftime() << "                   "<< flight.landingtime();
+            std::cout<< "["<<F.getPoint(rn).getlat()<<" , "<<F.getPoint(rn).getlong()<<"]       ";
+            std::cout<< F.liftofftime() << "                   "<< F.landingtime();
 
         }
     }
+}
 
 }
 
