@@ -121,6 +121,14 @@ void initalflights() {
     }
 }
 
+Flight whichFlightDoesPlaneBelongTo (Plane P){
+    for (int i = 0; i < plannedflights.size(); i++){
+        if (plannedflights[i].getaircraft() == P){
+            return plannedflights[i];
+        }
+    }
+}
+
 //refreshes time (boht HH:MM and allminutes which is just and ongoing counter of the seconds since program started)
 void resettime(bool print) {
     rn = time(NULL);
@@ -304,7 +312,7 @@ void findplane(){
                     std::cout<< "\nStatus:    Currently flying";
                 }
                 else{
-                    std::cout<< "\nLocation:       " << P.getcoordinates(); 
+                    std::cout<< "\nLocation:       " << "[" << P.getcoordinates().getlat() << " , " << P.getcoordinates().getlong()<<"]"; 
                 }
             }
         }
