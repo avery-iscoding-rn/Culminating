@@ -16,6 +16,7 @@ private:
     bool flying;
     int capacity, speed;
 public:
+    int flightnum; //current flight number
     Plane(std::string n, Point loc, bool f, int cp, int s);
     std::string getmodel() const;
     //returns true if plane is flying, false if plane is not

@@ -21,15 +21,19 @@ int allminutes;
 time_t start = time(NULL); //inital timestamp for reference-- for start of program to reset simulated time
 time_t rn;
 std::vector<Airport> Airports;
-std::vector<Flight> plannedflights; 
+std::vector<Flight> plannedflights; //vector of all flight ever
 std::vector<Plane> Planes;
+std::vector<int> flightnums; //vector of all existing flight ID/flight numbers
 bool running = true;  //if program is running
+
 //-----------------------------
 
 
 
 
 //FUNCTIONS -------------------
+
+
 //Random number generator i found somewhere
 int randomInt(int low, int high) { 
     static std::random_device rd;
@@ -89,8 +93,11 @@ void createplanes() {
     Planes.push_back(Boeing777);
 }
 
+
+
 //creates an inital flight for each plane to start the schedule (vector of flights)
 void initalflights() {
+    //finding planes
     int j;
     for (int i = 0; i < 3; i++) {
         //finding plane
@@ -103,6 +110,7 @@ void initalflights() {
                 } 
             }
         }
+        
         //randomizing destination
         int dest = j;
         do {
@@ -110,24 +118,50 @@ void initalflights() {
         } while (dest == j);
 
         //creating flight
-        Flight temporary(std::to_string(randomInt(100000,999999)), Airports[dest] ,Airports[j], Airports[j].planes[0],allminutes,-1); //arrival is -1 for rn cuz we don't know time yet
-        temporary.getorigin().removeplane(temporary.getaircraft()); //removes and makes plane bool "flying"/true
-        std::cout << "Aircraft: " << temporary.getaircraft().getmodel() << ",\n Planes at origin: ";
-        temporary.getorigin().printplanes();
+        //randomizing flight num and fact checking it doesnt already exist.
+        bool repeated = false;
+        int ID;
+        do {
+            ID = randomInt(100000,999999);
+            for (int i = 0; i < flightnums.size(); i++) {
+                if (flightnums[i] == ID) {
+                    repeated = true;
+                }
+            }
+        } while (repeated);
         
+        
+        //creating instance of flight
+        //estimated arrival time
+        int atime; 
+        atime = Point::getdistance(Airports[dest].getlocation(),Airports[j].getlocation())/Airports[j].planes[0].getspeed(); //time is distance/speed
+        
+        Flight temporary(std::to_string(ID), Airports[dest] ,Airports[j], Airports[j].planes[0],allminutes,allminutes + (60*atime)); //tracking time + (60(to convert to minutes) x estimiated time) --> tracked estimated time (in allminutes)
+        std::cout << "\nflight created";
         std::cout << "\n" << temporary.getcode();
         plannedflights.push_back(temporary);
-
+        
     }
 }
 
-Flight whichFlightDoesPlaneBelongTo (Plane P){
-    for (int i = 0; i < plannedflights.size(); i++){
-        if (plannedflights[i].getaircraft() == P){
-            return plannedflights[i];
-        }
+//creates scheduled flights
+void scheduleflights() {
+    if (plannedflights.empty()) { //if no planned flights
+        initalflights()
+    } else { //if there are planned flights
+        std::cout << "PLACEHOLDER"
+        //AURORA I WILL FINISH THIS FUNCITON AFTER SCHOOL OKAY-- IT WILL FILL THE PLANNED FLIGHT VECTOR WITH FLIGHTS
     }
 }
+// Flight whichFlightDoesPlaneBelongTo (Plane P){
+    //     for (int i = 0; i < plannedflights.size(); i++){
+//         if (plannedflights[i].getaircraft() == P){
+//             return plannedflights[i];
+//         }
+//     }
+//     Flight fake()
+//     return fake;
+// }
 
 //refreshes time (boht HH:MM and allminutes which is just and ongoing counter of the seconds since program started)
 void resettime(bool print) {
@@ -291,7 +325,9 @@ void searchairport(){
                 std::cout<< "Departing soon.         ";
             }
             std::cout<< "["<<F.getPoint(rn).getlat()<<" , "<<F.getPoint(rn).getlong()<<"]       ";
-            std::cout<< convert(F.liftofftime()) << "                   "<< convert(F.landingtime());
+            convert(F.liftofftime());
+            std::cout << "                   ";
+            convert(F.landingtime());
 
         }
     }
@@ -300,23 +336,26 @@ void searchairport(){
 }
 
 void findplane(){
-    std::cout << "Enter the plane model (example: Boeing737):    ";
+    std::cout << "Enter the plane model (example: Boeing737): ";
         std::string plane;
         std::cin>> plane;
         for (Plane P: Planes){
             if (P.getmodel() == plane){
                 std::cout<< "\n"<< plane;
-                std::cout<<"\nCapactity:    "<< P.getcapacity();
-                std::cout<< "\nPlane speed:     " << P.getspeed();
+                std::cout<<"\nCapactity: "<< P.getcapacity();
+                std::cout<< "\nPlane speed: " << P.getspeed();
                 if (P.status()== true){
-                    std::cout<< "\nStatus:    Currently flying";
+                    std::cout<< "\nStatus: Currently flying";
                 }
                 else{
-                    std::cout<< "\nLocation:       " << "[" << P.getcoordinates().getlat() << " , " << P.getcoordinates().getlong()<<"]"; 
+                    std::cout<< "\nLocation: " << "[" << P.getcoordinates().getlat() << " , " << P.getcoordinates().getlong()<<"]"; 
                 }
             }
         }
 }
+
+
+
 
 //prints menu, processes user input (also validates it), then runs subsequent function
 void menu() {
