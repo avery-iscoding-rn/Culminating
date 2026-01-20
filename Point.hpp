@@ -2,7 +2,7 @@
 #define POINT_HPP
 
 #include <iostream>
-//#include <algorithm>
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <cmath>

@@ -3,7 +3,7 @@
 
 
 #include <iostream>
-//#include <algorthim>
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <cmath>
@@ -17,7 +17,7 @@ private:
     int capacity, speed;
 public:
     Plane(std::string n, Point loc, bool f, int cp, int s);
-    std::string getmodel();
+    std::string getmodel() const;
     //returns true if plane is flying, false if plane is not
     bool status();
     int getcapacity();
@@ -29,5 +29,6 @@ public:
     //switches status to true, as plane is no longer flying
     void takeoff();
     
+    bool operator==(const Plane& other) const;
 };
 #endif

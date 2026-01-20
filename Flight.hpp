@@ -2,7 +2,7 @@
 #define FLIGHT_HPP
 
 #include <iostream>
-//#include <algorthim>
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <cmath>
@@ -15,19 +15,20 @@
 class Flight {
 private:
     std::string code;
-    Airport destination, origin;
+    Airport* destination;
+    Airport* origin;
     Plane aircraft;
     int liftoff, arrival;
 
 public:
-    Flight(std::string c, Airport d, Airport o, Plane p, int l, int a);//constructor;
+    Flight(std::string c, Airport& d, Airport& o, Plane p, int l, int a);//constructor;
 
     //finds current location of a plane en route between two different airport depending on the current time
     Point getPoint(int timern); 
     //returns location of the plane in point (lat and long)
 
-    Airport getdest();
-    Airport getorigin();
+    Airport& getdest();
+    Airport& getorigin();
     std::string getcode();
     Plane getaircraft();
     int liftofftime();

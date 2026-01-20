@@ -1,7 +1,7 @@
 #include "Flight.hpp"
 
-Flight::Flight(std::string c, Airport d, Airport o, Plane p, int l, int a)
-    :code(c), destination(d), origin(o), aircraft(p), liftoff(l), arrival(a) {}
+Flight::Flight(std::string c, Airport& d, Airport& o, Plane p, int l, int a)
+    :code(c), destination(&d), origin(&o), aircraft(p), liftoff(l), arrival(a) {}
 
 struct coordinates {
     double x;
@@ -14,8 +14,8 @@ Point Flight::getPoint(int timern){
 
     int R = 6371; // earth's radius
 
-    double φ = destination.getlocation().getlat() * M_PI / 180;
-    double λ = destination.getlocation().getlong()* M_PI / 180;
+    double φ = destination->getlocation().getlat() * M_PI / 180;
+    double λ = destination->getlocation().getlong()* M_PI / 180;
     // Converting degrees to radians
 
     double xO = cos(φ) * cos(λ);
@@ -23,8 +23,8 @@ Point Flight::getPoint(int timern){
     double zO = sin(φ);
     // Using degrees in radians to a vector (origin)
 
-    double φ2 = destination.getlocation().getlat()* M_PI / 180;
-    double λ2 = destination.getlocation().getlong()* M_PI / 180;
+    double φ2 = destination->getlocation().getlat()* M_PI / 180;
+    double λ2 = destination->getlocation().getlong()* M_PI / 180;
     // Converting degrees to radians
 
     double xD = cos(φ2) * cos(λ2);
@@ -40,7 +40,7 @@ Point Flight::getPoint(int timern){
     // Because cos theta = a / h so a = surface distance and h = the earth's radius
     // I think that's why but not 100% sure lol
 
-    double distance = Point::getdistance(destination.getlocation(), destination.getlocation());
+    double distance = Point::getdistance(destination->getlocation(), destination->getlocation());
     // not needed (?)
 
     double Distancetravelled = aircraft.getspeed() * (timern - liftoff);
@@ -83,12 +83,12 @@ Point Flight::getPoint(int timern){
     return PT;
 };
 
-Airport Flight::getdest() {
-    return destination;
+Airport& Flight::getdest() {
+    return *destination;
 }
 
-Airport Flight::getorigin(){
-    return origin;
+Airport& Flight::getorigin(){
+    return *origin;
 }
 
 std::string Flight::getcode(){

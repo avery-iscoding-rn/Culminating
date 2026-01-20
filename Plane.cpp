@@ -3,7 +3,7 @@
 Plane::Plane(std::string n, Point loc, bool f, int cp, int s)
     :name(n), coordinates(loc), flying(f), capacity(cp), speed(s) {}
 
-std::string Plane::getmodel() {
+std::string Plane::getmodel() const {
     return name;
 }
 
@@ -31,4 +31,10 @@ void Plane::land() {
 //switches status to true, as plane is no longer flying
 void Plane::takeoff() {
     flying = true;
+}
+//OVERRIDES == OPERATOR
+//overrides == operator to allow to planes to be compared via their model
+bool Plane::operator==(const Plane& other) const {
+    return this->getmodel() == other.getmodel();
+    //overrides == to compare their model
 }

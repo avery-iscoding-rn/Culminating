@@ -97,7 +97,7 @@ void initalflights() {
         for (int h = 0; h < Airports.size(); h++) {
             if (!Airports[h].planes.empty()) {
                 for (int k = 0; k < Airports[h].planes.size(); k++){
-                    if (!Airports[h].planes[h].status()) {
+                    if (!Airports[h].planes[k].status()) {
                         j = h;
                     }
                 } 
@@ -117,7 +117,7 @@ void initalflights() {
         
         std::cout << "\n" << temporary.getcode();
         plannedflights.push_back(temporary);
-        
+
     }
 }
 
