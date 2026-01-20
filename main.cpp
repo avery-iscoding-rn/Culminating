@@ -291,7 +291,7 @@ void searchairport(){
                 std::cout<< "Departing soon.         ";
             }
             std::cout<< "["<<F.getPoint(rn).getlat()<<" , "<<F.getPoint(rn).getlong()<<"]       ";
-            std::cout<< F.liftofftime() << "                   "<< F.landingtime();
+            std::cout<< convert(F.liftofftime()) << "                   "<< convert(F.landingtime());
 
         }
     }
