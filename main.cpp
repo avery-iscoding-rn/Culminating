@@ -22,6 +22,7 @@ time_t start = time(NULL); //inital timestamp for reference-- for start of progr
 time_t rn;
 std::vector<Airport> Airports;
 std::vector<Flight> plannedflights; 
+std::vector<Plane> Planes;
 bool running = true;  //if program is running
 //-----------------------------
 
@@ -82,6 +83,10 @@ void createplanes() {
     num = randomInt(0,11);
     Plane Boeing777("Boeing777", Airports[randomInt(0,11)].getlocation(), false, 510, 920);
     Airports[num].addplane(Boeing777);
+
+    Planes.push_back(Boeing737);
+    Planes.push_back(Airbus330);
+    Planes.push_back(Boeing777);
 }
 
 //creates an inital flight for each plane to start the schedule (vector of flights)
@@ -106,7 +111,6 @@ void initalflights() {
 
         //creating flight
         Flight temporary(std::to_string(randomInt(100000,999999)), Airports[dest] ,Airports[j], Airports[j].planes[0],allminutes,-1); //arrival is -1 for rn cuz we don't know time yet
-        
         temporary.getorigin().removeplane(temporary.getaircraft()); //removes and makes plane bool "flying"/true
         std::cout << "Aircraft: " << temporary.getaircraft().getmodel() << ",\n Planes at origin: ";
         temporary.getorigin().printplanes();
@@ -301,7 +305,7 @@ void menu() {
     
 
 
-    if (num == 1) { // FLIGHT SCHEDULEs
+    if (num == 1) { // FLIGHT SCHEDULE
         std::cout << "placeholder";
         
     } else if (num == 2) { //SEE LIVE UPDATES
