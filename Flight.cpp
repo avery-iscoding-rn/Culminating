@@ -1,6 +1,6 @@
 #include "Flight.hpp"
 
-Flight::Flight(std::string c, Airport& d, Airport& o, Plane p, int l, int a)
+Flight::Flight(std::string c, Airport& d, Airport& o, Plane p, double l, double a)
     :code(c), destination(&d), origin(&o), aircraft(p), liftoff(l), arrival(a) {}
 
 struct coordinates {
@@ -128,10 +128,10 @@ Plane Flight::getaircraft(){
     return aircraft;
 }
 
-int Flight::liftofftime(){
+double Flight::liftofftime(){
     return liftoff;
 }
 
-int Flight::landingtime(){
+double Flight::landingtime(){
     return arrival;
 }
