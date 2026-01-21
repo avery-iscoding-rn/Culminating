@@ -507,24 +507,17 @@ void searchairport(){
                 std::cout<< std::left << std::setw(9) << std::setfill(space)<< "| "+F.getcode();
                 std::cout<< std::left << std::setw(18) << std::setfill(space)<< "| "+F.getdest().getcode()+ ":" + F.getdest().getcity();
                 resettime(false);
-                if(F.atorigin(F.getPoint(allminutes))){
-                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getorigin().getcode();
-                }
-                else if (F.atdest(F.getPoint(allminutes))){
-                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getdest().getcode();
-                }
-                else {
-                    resettime(false);
-                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getPoint(allminutes).toString();
-                }
                 
                 if (F.liftofftime() < allminutes && allminutes < F.landingtime() ){
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getPoint(allminutes).toString();
                     s = "Now Flying";
                 }
                 else if (F.liftofftime() > allminutes){
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getorigin().getcode();
                     s = "Departing soon";
                 }
                 else{
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getdest().getcode();
                     s = "Arrived";
                 }
                 std::cout<< std::left << std::setw(20) << std::setfill(space)<< "| "+s;
@@ -544,7 +537,7 @@ void searchairport(){
             std::cout<< "\n\nArrivals:  " << "\n----------\n"; 
             std::cout << std::left << std::setw (16) << std::setfill(space) << "\n| Code:";
             std::cout<< std::setw(18) << std::setfill(space) << "| Arriving from:";
-            std::cout<< std::setw(30) << std::setfill(space) << "| Location:";
+            std::cout<< std::setw(30) << std::setfill(space) << "| Current Plane Location:";
             std::cout<< std::setw(16) << std::setfill(space) << "| Status:";
             std::cout<< std::setw(20) << std::setfill(space) << "| Departure Time:";
             std::cout<< std::setw(10) << std::setfill(space) << "| Arrival Time:";
@@ -555,23 +548,16 @@ void searchairport(){
                 std::cout<< std::left << std::setw(15) << std::setfill(space)<< "| "+F.getcode();
                 std::cout<< std::left << std::setw(18) << std::setfill(space)<< "| "+F.getorigin().getcode()+ ":" + F.getorigin().getcity();
                 resettime(false);
-                if(F.atorigin(F.getPoint(allminutes))){
-                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getorigin().getcode();
-                }
-                else if (F.atdest(F.getPoint(allminutes))){
-                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getdest().getcode();
-                }
-                else {
-                    resettime(false);
-                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getPoint(allminutes).toString();
-                }
                 if (F.liftofftime() < allminutes && allminutes < F.landingtime() ){
-                        s = "Now Flying";
-                    }
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getPoint(allminutes).toString();
+                    s = "Now Flying";
+                }
                 else if (F.liftofftime() > allminutes){
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getorigin().getcode();
                     s = "Departing soon";
                 }
                 else{
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getdest().getcode();
                     s = "Arrived";
                 }
                 std::cout<< std::left << std::setw(16) << std::setfill(space)<< "| "+s;
