@@ -1,12 +1,13 @@
 #include "Plane.hpp"
 
 
-Plane::Plane(std::string n, Point loc, bool f, int cp, int s)
-    :name(n), coordinates(loc), flying(f), capacity(cp), speed(s) {}
+Plane::Plane(std::string n, Point loc, bool f, int cp, int s, int fn)
+    :name(n), coordinates(loc), flying(f), capacity(cp), speed(s),flightnum(fn) {}
 
 std::string Plane::getmodel() const {
     return name;
 }
+
 
 Point Plane::getcoordinates(){
     return coordinates;
@@ -24,6 +25,7 @@ int Plane::getspeed() {
 bool Plane::status() {
     return flying; //if flying
 }
+
 
 //switches status to false, as plane is no longer flying
 void Plane::land() {

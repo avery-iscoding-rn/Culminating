@@ -17,7 +17,7 @@ Point::Point(double l, double L)
 
     double a = (std::pow(std::sin(Dlat/2),2)) + (std::cos(rad1lat) * std::cos(rad2lat) * std::pow((std::sin(Dlong/2)),2));
     double c = 2* std::atan2(std::sqrt(a), std::sqrt(1-a)) ;
-    double distance = 6731 * c; // earth's radius
+    double distance = 6371 * c; // earth's radius
     return distance;
 }
 
@@ -26,4 +26,8 @@ double Point::getlat(){
 }
 double Point::getlong(){
     return longitude;
+}
+
+std::string Point::toString(){
+    return ("[" + std::to_string(latitude) + ","+ std::to_string(longitude)+"]");
 }
