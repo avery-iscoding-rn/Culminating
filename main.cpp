@@ -29,6 +29,15 @@ std::vector<Plane> Planes;
 std::vector<int> flightnums; //vector of all existing flight ID/flight numbers
 bool running = true;  //if program is running
 std::vector <Flight> nowflights;
+
+struct UPDATE{
+    int timeofupdate;
+    std::string message; //AIRCRAFT ARRIVED/DEPARTED AT AIRPORTCODE
+    Flight theflight;
+    Plane theplane;
+};
+
+std::vector<UPDATE> liveupdates; //contains all updates
 //-----------------------------
 
 
@@ -128,7 +137,7 @@ void createplanes() {
     int num;
 
     num = randomInt(0,11);
-    Plane Boeing737("Boeing737", Airports[num].getlocation(), false, 200, 730,0);
+    Plane Boeing737("Boeing737", Airports[num].getlocation(), false, 200, 730,0); //last num is the flight they belong to, 0 == no flight
     Airports[num].addplane(Boeing737);
 
     num = randomInt(0,11);
@@ -194,6 +203,19 @@ void initalflights() {
         //std::cout << "\nflight created";
         std::cout << "\n" << temporary.getcode();
         plannedflights.push_back(temporary);
+
+        //making sure the plane knows its flying now (cuz all inital flights leave at 00:00)
+        temporary.getaircraft().flightnum = std::stoi(temporary.getcode());
+        temporary.getaircraft().takeoff();
+
+        //creating update
+        struct UPDATE newupdatee{
+            allminutes,
+            "Departed",
+            temporary,
+            temporary.getaircraft(),
+        };
+        liveupdates.push_back(newupdatee);
     } 
 }
 
@@ -279,15 +301,7 @@ void printflightschedule() {
         std::cout << "Travelling " << dist << "km in about " << dist/thisone.getaircraft().getspeed() << " hours (speed of " << thisone.getaircraft().getspeed() << "km/h)";
     }
 }
-// Flight whichFlightDoesPlaneBelongTo (Plane P){
-    //     for (int i = 0; i < plannedflights.size(); i++){
-//         if (plannedflights[i].getaircraft() == P){
-//             return plannedflights[i];
-//         }
-//     }
-//     Flight fake()
-//     return fake;
-// }
+
 
 
 //searches vectors for the given flight code (basically linear search)
@@ -528,7 +542,18 @@ void menu() {
         printflightschedule();
         
     } else if (num == 2) { //SEE LIVE UPDATES
-        std::cout << "placeholder";
+        for (int i = 0; i < liveupdates.size(); i++) {
+            UPDATE thisone = liveupdates[i];
+            std::cout << "\n";
+            convert(thisone.timeofupdate);
+            std::cout << "-> Fight " << thisone.theflight.getcode() << ": " << thisone.theplane.getmodel() << " has " <<  thisone.message ;
+            if (thisone.message == "Departed") {
+                std:: cout << " from " << thisone.theflight.getorigin().getcode();
+            } else {
+                std:: cout << " at " << thisone.theflight.getdest().getcode();
+            }
+        }
+        std::cout << "\n----------------\n";
 
     } else if (num == 3) { //FIND A PLANE
         findplane();
@@ -553,7 +578,93 @@ void setup() {
     scheduleflights();
 }
 
+//updating all planes, their statuses locations and flights.
+void update() {
+    for (int i = 0; i < Planes.size(); i++) {
+        resettime(false);
 
+        if (Planes[i].flightnum != 0) { //if in a flight rn
+            
+            //finding our flight
+            int myflight = -1; 
+            for (int j = 0; j < plannedflights.size(); j++) {
+                if (plannedflights[j].getcode() == std::to_string(Planes[i].flightnum)) {
+                    myflight = j;
+                    break;
+                }
+            }
+
+            Flight& subject = plannedflights[myflight];
+
+            //updating coordinates
+            subject.getPoint(allminutes);
+            subject.getaircraft().setcoordinates(subject.getPoint(allminutes));
+            std::cout << "\n" << subject.getaircraft().getmodel() << " is located at " << subject.getaircraft().getcoordinates().toString();
+
+            if (allminutes >= subject.landingtime()-1) { //if arrived
+                //resetting plane stats
+                subject.getaircraft().land();
+                subject.getaircraft().flightnum = 0;
+
+                struct UPDATE newupdate = {
+                    allminutes,
+                    "Arrived",
+                    subject,
+                    subject.getaircraft(),
+                };
+                liveupdates.push_back(newupdate);
+            }
+            
+
+        } else {
+
+
+            if (Planes[i].flightnum == 0) { //if we don't know next flight
+
+                //finding most recently occured flight
+                int lastone = -1;//next flight
+                for (int j = 0; j < liveupdates.size(); j++) {
+                    if (liveupdates[j].theplane == Planes[i]) {
+                        lastone = std::stoi(liveupdates[j].theflight.getcode());
+                    }
+                }
+    
+                if (lastone != -1){//making sure we have a valid flight number
+                    //finding next flightnum
+                    int index;
+                    for (int j = 0; j < plannedflights.size(); j++) {
+                        if (plannedflights[j].getcode() == std::to_string(lastone)) { //finding index of last flight
+                            index = j;
+                        }
+                    }
+                    int temp;
+                    for (int j = index+1; j < plannedflights.size(); j++) {
+                        if (plannedflights[j].getcode() == std::to_string(lastone)) { //finding index of NEW FLIGHT starting at old flight
+                            temp = j;
+                            break;
+                        }
+                    }
+                    Flight nextflight = plannedflights[temp];
+
+                    Planes[i].flightnum = std::stoi(nextflight.getcode()); //switching plane num to newest flight ID
+
+                    if (allminutes-2 <= nextflight.liftofftime()) {
+                        Planes[i].takeoff(); //switch bool flying to true
+
+                        struct UPDATE newupdatee{
+                            allminutes,
+                            "Departed",
+                            nextflight,
+                            nextflight.getaircraft(),
+                        };
+                        liveupdates.push_back(newupdatee);
+                    }
+
+                }
+            }        
+        }
+    }
+}
 //------------------------------------------------------
 
 
@@ -568,9 +679,7 @@ int main(void){
     while (running) {
         resettime(true);
         menu();
-        for (int i = 0; i < plannedflights.size(); i++) {
-            plannedflights[i].fly(plannedflights[i].getaircraft().status(),rn);
-        }
+        update();
     }
 
     return 0;

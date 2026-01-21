@@ -24,6 +24,8 @@ public:
     int getcapacity();
     int getspeed();
     Point getcoordinates();
+    //set coordinates
+    void setcoordinates(Point p);
      //switches status to false, as plane is no longer flying
     void land();
     //switches status to true, as plane is no longer flying

@@ -17,11 +17,11 @@ private:
     std::string code;
     Airport* destination;
     Airport* origin;
-    Plane aircraft;
+    Plane* aircraft;
     double liftoff, arrival;
 
 public:
-    Flight(std::string c, Airport& d, Airport& o, Plane p, double l, double a);//constructor;
+    Flight(std::string c, Airport& d, Airport& o, Plane& p, double l, double a);//constructor;
 
     //finds current location of a plane en route between two different airport depending on the current time
     Point getPoint(int timern); 
@@ -30,11 +30,11 @@ public:
     Airport& getdest();
     Airport& getorigin();
     std::string getcode();
-    Plane getaircraft();
+    Plane& getaircraft();
     double liftofftime();
     double landingtime();
 
-    void fly(bool rweflying, int timern);
+    // void fly(bool rweflying, int timern);
     bool atorigin(Point mycoordinates);
     bool atdest(Point mycoordinates);
 

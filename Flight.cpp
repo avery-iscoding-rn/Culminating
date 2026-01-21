@@ -1,7 +1,7 @@
 #include "Flight.hpp"
 
-Flight::Flight(std::string c, Airport& d, Airport& o, Plane p, double l, double a)
-    :code(c), destination(&d), origin(&o), aircraft(p), liftoff(l), arrival(a) {}
+Flight::Flight(std::string c, Airport& d, Airport& o, Plane& p, double l, double a)
+    :code(c), destination(&d), origin(&o), aircraft(&p), liftoff(l), arrival(a) {}
 
 struct coordinates {
     double x;
@@ -43,7 +43,7 @@ Point Flight::getPoint(int timern){
     double distance = Point::getdistance(destination->getlocation(), destination->getlocation());
     // not needed (?)
 
-    double Distancetravelled = aircraft.getspeed() * (timern - liftoff);
+    double Distancetravelled = aircraft->getspeed() * (timern - liftoff);
     //Velocity (km/h) x time spent = distance travelled
 
     double t = Distancetravelled/surfacedistance;
@@ -83,17 +83,17 @@ Point Flight::getPoint(int timern){
     return PT;
 };
 
-//constant updating 
-void Flight::fly(bool rweflying, int timern) {
-    if (rweflying) {
-        aircraft.getcoordinates() = getPoint(timern);
-    } 
-}
+// //constant updating flights
+// void Flight::fly(bool rweflying, int timern) {
+//     if (rweflying) {
+//         aircraft.getcoordinates() = getPoint(timern);
+//     } 
+// }
 
 //returns true is plane location is close enough to airport origin location
 bool Flight::atorigin(Point mycoordinates) {
     if ((mycoordinates.getlat() >= origin->getlocation().getlat()-1 && mycoordinates.getlat() <= origin->getlocation().getlat()+1) && (mycoordinates.getlong() >= origin->getlocation().getlong()-1 && mycoordinates.getlong() <= origin->getlocation().getlong()+1)){
-        aircraft.takeoff(); //starts flight;
+        aircraft->takeoff(); //starts flight;
         return true;
     }
     else{
@@ -104,7 +104,7 @@ bool Flight::atorigin(Point mycoordinates) {
 //returns true if plane location is close enough to 
 bool Flight::atdest(Point mycoordinates) {
     if ((mycoordinates.getlat() >= destination->getlocation().getlat()-1 && mycoordinates.getlat() <= destination->getlocation().getlat()+1) && (mycoordinates.getlong() >= destination->getlocation().getlong()-1 && mycoordinates.getlong() <= destination->getlocation().getlong()+1)){
-        aircraft.land();//ends flight
+        aircraft->land();//ends flight
         return true;
     }
     else{
@@ -124,8 +124,8 @@ std::string Flight::getcode(){
     return code;
 }
 
-Plane Flight::getaircraft(){
-    return aircraft;
+Plane& Flight::getaircraft(){
+    return *aircraft;
 }
 
 double Flight::liftofftime(){
