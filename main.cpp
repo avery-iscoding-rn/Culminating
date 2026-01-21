@@ -578,7 +578,7 @@ void searchairport(){
 
 // searches for a plane and outputs stats and current locaation
 void findplane(){
-    std::cout << "Enter the plane model (example: Boeing737): ";
+    std::cout << "Enter the plane model (Boeing737, Airbus330, Boeing777): ";
         std::string plane2;
         std::cin>> plane2;
     //     for (Plane P: Planes){
