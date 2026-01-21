@@ -54,40 +54,14 @@ int randomInt(int low, int high) {
     return dist(gen);
 }
 
-//refreshes time (boht HH:MM and allminutes which is just and ongoing counter of the seconds since program started)
-void resettime(bool print) {
-    rn = time(NULL);
-    rn = rn-start;
-
-    //converting into readable format
-    allminutes = rn; //all seconds
-
-    minutes = rn%60; //irl seconds
-    hours = rn/60; //irl minutes
-
-    realhours = hours/60; //removing real hours
-    hours = hours - (realhours*60);
-
-    if (print) {
-        std::cout << "\n\n------------------------\n";
-        printf("January 1st, 2075, %02d:%02d\n", hours, minutes);
-    }
-
-    //Stopping the clock at 24 hours
-    if (hours > 23) {
-        running = false;
-        std::cout << "\n\n The day is over! Thanks for visiting!";
-    }
-}
-
 //converts AND PRINTS an allminutes value into the 24 hour HH:MM clock string
 void convert(int allmin) {
-    resettime(false);
     int h = allmin/60;
     int m = allmin%60;
 
-    printf("%02d:%02d\n", h, m);
+    printf("%02d:%02d", h, m);
 }
+
 // prints status
 std::string printstatus(Flight F){
     if (F.getaircraft().status()){
@@ -132,6 +106,7 @@ void readairports() {
     }
     inFile.close();
 }
+
 //creates planes and puts them in a random airport
 void createplanes() { 
     int num;
@@ -157,9 +132,11 @@ void createplanes() {
 
 //creates an inital flight for each plane to start the schedule (vector of flights)
 void initalflights() {
+
     //rounding set up
     std::cout << std::fixed << std::setprecision(2);
 
+    //finding planes which airport each plane is at
     int j;
     
     for (int p = 0; p < Planes.size(); p++) { //for every plane
@@ -222,7 +199,13 @@ void initalflights() {
 
 
 //creates scheduled flights
+//creates scheduled flights
 void scheduleflights() {
+    if (plannedflights.empty()) { //if no planned flights
+        initalflights();
+    } else { //if there are planned flights
+        std::cout << "PLACEHOLDER";
+        //AURORA I WILL FINISH THIS FUNCITON AFTER SCHOOL OKAY-- IT WILL FILL THE PLANNED FLIGHT VECTOR WITH FLIGHTS
     //creating inital flights
     initalflights();
 
@@ -280,6 +263,7 @@ void scheduleflights() {
     
     //sorting flights according to their departure time
     std::sort(plannedflights.begin(), plannedflights.end());
+}
 
 
 }
@@ -301,7 +285,15 @@ void printflightschedule() {
         std::cout << "Travelling " << dist << "km in about " << dist/thisone.getaircraft().getspeed() << " hours (speed of " << thisone.getaircraft().getspeed() << "km/h)";
     }
 }
-
+// Flight whichFlightDoesPlaneBelongTo (Plane P){
+    //     for (int i = 0; i < plannedflights.size(); i++){
+//         if (plannedflights[i].getaircraft() == P){
+//             return plannedflights[i];
+//         }
+//     }
+//     Flight fake()
+//     return fake;
+// }
 
 
 //searches vectors for the given flight code (basically linear search)
@@ -339,7 +331,7 @@ void searchflightcode(){
     //finding plane
         std::string planestatus;
         resettime(false);
-        Point currentlocation = temp.getPoint(rn);
+        Point currentlocation = temp.getPoint(allminutes);
 
         //if close to Airport of origin, then display departing soon
         if ((currentlocation.getlat() >= temp.getorigin().getlocation().getlat()-1 && currentlocation.getlat() <= temp.getorigin().getlocation().getlat()+1) && (currentlocation.getlong() >= temp.getorigin().getlocation().getlong()-1 && currentlocation.getlong() <= temp.getorigin().getlocation().getlong()+1)) {
@@ -358,11 +350,12 @@ void searchflightcode(){
         } else {
             std::cout << "\nStatus: Currently flying";
             resettime(false);
-            std::cout << "\nCurrent location: "<< "["<<temp.getPoint(rn).getlat() << " , " << temp.getPoint(rn).getlong()<<"]";
+            std::cout << "\nCurrent location: "<< "["<<temp.getPoint(allminutes).getlat() << " , " << temp.getPoint(allminutes).getlong()<<"]";
         }
     }    
 }
 
+// returns vector of all flights from a certain airport either departing or arriving
 std::vector<Flight> findFlights(Airport A, std::string DorA){
 
     std::vector<Flight> flightsFromAirport;
@@ -393,12 +386,16 @@ std::vector <Flight> getcurrentflights (int timern){
     return currentflights;
 }
 
+// searches for an airport by 3 digit code and outputs departures and arrivals
 void searchairport(){
-    std::cout << "Enter the 3 letter code of the airport you are looking for: ";
+
+    int searchindex;
     std::string code;
+    char space = ' ';
+
+    std::cout << "Enter the 3 letter code of the airport you are looking for: ";
     std::cin >> code;
     bool doesexist = false;
-    int searchindex;
     
     for (int i = 0; i < Airports.size(); i ++){
         if (Airports[i].getcode() == code){
@@ -412,75 +409,124 @@ void searchairport(){
     }
 
     else{
-        char space = ' ';
         std::cout<< "\nAirport: " << Airports[searchindex].getname();
         std::cout << "\nCity:   " << Airports[searchindex].getcity();
         
         // departures
+        // prints if there are no flights departing from given airport (findFlights().empty() will return a bool)
         if(!findFlights(Airports[searchindex], "D").empty()){
-            std::cout<< "\nDepartures:  " << "-----"; 
-            std::cout <<"\nCode         |   Destination   |    Status    |  Location        | Departure | Arrival ";
+            std::cout<< "\n\nDepartures:  " << "\n-----"; 
+
+            /////////// FORMATTING USING <IOMANIP> /////////////////
+            // std::left brings to left
+            // std::setw gives the width of the column
+            // std::setfill () fills the remaining spaces with a char
+
+            std::cout << std::left << std::setw (10) << std::setfill(space) << "\n\n| Code:";
+            std::cout<< std::setw(18) << std::setfill(space) << "| Destination:";
+            std::cout<< std::setw(20) << std::setfill(space) << "| Status:";
+            std::cout<< std::setw(30) << std::setfill(space) << "| Location:";
+            std::cout<< std::setw(10) << std::setfill(space) << "| Departure:";
+            std::cout<< std::setw(10) << std::setfill(space) << "| Arriving:";
+            std::cout<< std::left << std::setw(101) << std::setfill('-')<< "\n";
             for (Flight F : findFlights(Airports[searchindex], "D") ){
                 std::cout<<"\n";
-                std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getcode();
-                std::cout<< std::left << std::setw(18) << std::setfill(space)<< F.getdest().getcode()<< ":" << F.getdest().getcity();
-                std::cout<< std::left << std::setw(16) << std::setfill(space)<< printstatus(F);
-                if(F.atorigin(F.getPoint(rn))){
-                    std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getorigin().getcode();
+                std::cout<< std::left << std::setw(10) << std::setfill(space)<< "| "+F.getcode();
+                std::cout<< std::left << std::setw(18) << std::setfill(space)<< "| "+F.getdest().getcode()+ ":" + F.getdest().getcity();
+                std::cout<< std::left << std::setw(20) << std::setfill(space)<< "| "+printstatus(F);
+                resettime(false);
+                if(F.atorigin(F.getPoint(allminutes))){
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getorigin().getcode();
                 }
-                else if (F.atdest(F.getPoint(rn))){
-                    std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getdest().getcode();
-                }
-                else {
-                    resettime(false);
-                    std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getPoint(rn).toString();
-                }
-                std::cout<< std::left << std::setw(11) << std::setfill(space)<< F.liftofftime();
-                std::cout<< std::left << std::setw(10) << std::setfill(space)<< F.landingtime();
-            }
-        }
-        else{
-            std::cout<<"\nNo flights departing today from this airport.";
-        }
-
-        // // arrivals
-        if(!findFlights(Airports[searchindex], "A").empty()){
-            std::cout<< "\nArrivals:  " << "-----"; 
-            std::cout <<"\nCode         |  Arriving from  |    Status    |  Location        | Departure | Arrival ";
-            for (Flight F : findFlights(Airports[searchindex], "A") ){
-                std::cout<<"\n";
-                std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getcode();
-                std::cout<< std::left << std::setw(18) << std::setfill(space)<< F.getorigin().getcode()<< ":" <<F.getorigin().getcity();
-                std::cout<< std::left << std::setw(16) << std::setfill(space)<<printstatus(F);
-                if(F.atorigin(F.getPoint(rn))){
-                    std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getorigin().getcode();
-                }
-                else if (F.atdest(F.getPoint(rn))){
-                    std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getdest().getcode();
+                else if (F.atdest(F.getPoint(allminutes))){
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getdest().getcode();
                 }
                 else {
                     resettime(false);
-                    std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getPoint(rn).toString();
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getPoint(allminutes).toString();
                 }
-                std::cout<< std::left << std::setw(11) << std::setfill(space)<< F.liftofftime();
-                std::cout<< std::left << std::setw(10) << std::setfill(space) <<F.landingtime();
+                std::cout<<  "| ";
+                convert(F.liftofftime());
+                std::cout<<std::setw(6) << " " <<"| ";
+                convert(F.landingtime());
             }
         }
         else{
-            std::cout<<"\nNo flights arriving to this airport today.";
-    
+        std::cout<<"\n\nNo flights departing today from this airport.";
         }
     }
+
+    // // arrivals
+    if(!findFlights(Airports[searchindex], "A").empty()){
+        std::cout<< "\n\nArrivals:  " << "\n----------"; 
+        std::cout << std::left << std::setw (16) << std::setfill(space) << "\n| Code:";
+        std::cout<< std::setw(18) << std::setfill(space) << "| Arriving from:";
+        std::cout<< std::setw(16) << std::setfill(space) << "| Status:";
+        std::cout<< std::setw(30) << std::setfill(space) << "| Location:";
+        std::cout<< std::setw(11) << std::setfill(space) << "| Departure:";
+        std::cout<< std::setw(10) << std::setfill(space) << "| Arriving:";
+        std::cout<< std::left << std::setw(101) << std::setfill('-')<< "\n";
+        for (Flight F : findFlights(Airports[searchindex], "A") ){
+            std::cout<<"\n";
+            std::cout<< std::left << std::setw(16) << std::setfill(space)<< "| "+F.getcode();
+            std::cout<< std::left << std::setw(18) << std::setfill(space)<< "| "+F.getdest().getcode()+ ":" + F.getorigin().getcity();
+            std::cout<< std::left << std::setw(16) << std::setfill(space)<< "| "+printstatus(F);
+            resettime(false);
+            if(F.atorigin(F.getPoint(allminutes))){
+                std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getorigin().getcode();
+            }
+            else if (F.atdest(F.getPoint(allminutes))){
+                std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getdest().getcode();
+            }
+            else {
+                resettime(false);
+                std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getPoint(allminutes).toString();
+            }
+            std::cout<<  "| ";
+            convert(F.liftofftime());
+            std::cout<<std::setw(6) << " " <<"| ";
+            convert(F.landingtime());
+        }
+    }
+    else{
+        std::cout<<"\n\nNo flights arriving to this airport today.";
+
+    }
+
 }
 
-
+// searches for a plane and outputs stats and current locaation
 void findplane(){
     std::cout << "Enter the plane model (example: Boeing737): ";
-    std::string plane;
-    std::cin>> plane;
+        std::string plane;
+        std::cin>> plane;
+        for (Plane P: Planes){
+            if (P.getmodel() == plane){
+                std::cout<< "\n"<< plane;
+                std::cout<<"\nCapacity: "<< P.getcapacity();
+                std::cout<< "\nPlane speed: " << P.getspeed();
+                if (P.status()== true){
+                    std::cout<< "\nStatus: Currently flying";
+                    std::cout<< "\nLocation: " << "[" << P.getcoordinates().getlat() << " , " << P.getcoordinates().getlong()<<"]"; 
+                }
+                else{
+                    //FUNCTION NEEDA TO BE MADE THEN UNCOMMENT
+                    std::cout<< "\nLocation: ";
+                    // if (P.atorigin()== true){
+                    //     std::cout << [" << P.getflight().getorigin().getlat(); << " , " << P.getflight().getorigin().getlong()<<"]"; 
+                        
+                    // }
+                    // else if (P.atdest() == true){
+                    //     std::cout<< P.getflight().getdest();
+                    // }
+                }
+            }
+        }
+    std::string plane2;
+    std::cin>> plane2;
     for (Plane P: Planes){
-        if (P.getmodel() == plane){
-            std::cout<< "\n"<< plane << "\n------------------";
+        if (P.getmodel() == plane2){
+            std::cout<< "\n"<< plane2 << "\n------------------";
             std::cout<<"\nCapactity: "<< P.getcapacity();
             std::cout<< "\nPlane speed: " << P.getspeed() << "km/h";
             if (P.status()== true){
@@ -539,7 +585,7 @@ void menu() {
 
 
     if (num == 1) { // FLIGHT SCHEDULE
-        printflightschedule();
+        std::cout << "placeholder";
         
     } else if (num == 2) { //SEE LIVE UPDATES
         for (int i = 0; i < liveupdates.size(); i++) {
@@ -575,7 +621,7 @@ void menu() {
 void setup() { 
     readairports();
     createplanes();
-    scheduleflights();
+    initalflights();
 }
 
 //updating all planes, their statuses locations and flights.
@@ -679,7 +725,9 @@ int main(void){
     while (running) {
         resettime(true);
         menu();
-        update();
+        for (int i = 0; i < plannedflights.size(); i++) {
+            plannedflights[i].fly(plannedflights[i].getaircraft().status(),rn);
+        }
     }
 
     return 0;

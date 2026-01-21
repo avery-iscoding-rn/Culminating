@@ -4,6 +4,9 @@
 Airport::Airport(std::string n, std::string cty, std::string c, Point loc)
     :name(n), city(cty), code(c), coordinates(loc) {}
 
+/////////////////////////////////////////////////
+
+// Simple functions to return a private value //
 std::string Airport::getname() {
     return name;
 }
@@ -19,6 +22,8 @@ std::string Airport::getcode() {
 Point Airport::getlocation(){
     return coordinates;
 }
+////////////////////////////////////////////////
+
 //adds plane to airport vector of planes (i.e. plane arrives at airport)
 void Airport::addplane(Plane p) { //plane is at the airport, it is no longer flying (land makes flying bool = false)
     planes.push_back(p);
