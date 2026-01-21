@@ -29,5 +29,5 @@ double Point::getlong(){
 }
 
 std::string Point::toString(){
-    return ("[" + std::to_string(latitude) + ","+ std::to_string(longitude)+"]");
+    return ("[" + std::to_string(std::ceil(latitude*100.0)/100.0) + ","+ std::to_string(std::ceil(longitude*100.0)/100.0)) +"]";
 }

@@ -404,56 +404,72 @@ void searchairport(){
         
         // departures
         if(!findFlights(Airports[searchindex], "D").empty()){
-            std::cout<< "\nDepartures:  " << "-----"; 
-            std::cout <<"\nCode         |   Destination   |    Status    |  Location        | Departure | Arrival ";
+            std::cout<< "\n\nDepartures:  " << "\n-----"; 
+            std::cout << std::left << std::setw (10) << std::setfill(space) << "\n\n| Code:";
+            std::cout<< std::setw(18) << std::setfill(space) << "| Destination:";
+            std::cout<< std::setw(20) << std::setfill(space) << "| Status:";
+            std::cout<< std::setw(30) << std::setfill(space) << "| Location:";
+            std::cout<< std::setw(10) << std::setfill(space) << "| Departure:";
+            std::cout<< std::setw(10) << std::setfill(space) << "| Arriving:";
+            std::cout<< std::left << std::setw(101) << std::setfill('-')<< "\n";
             for (Flight F : findFlights(Airports[searchindex], "D") ){
                 std::cout<<"\n";
-                std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getcode();
-                std::cout<< std::left << std::setw(18) << std::setfill(space)<< F.getdest().getcode()<< ":" << F.getdest().getcity();
-                std::cout<< std::left << std::setw(16) << std::setfill(space)<< printstatus(F);
+                std::cout<< std::left << std::setw(10) << std::setfill(space)<< "| "+F.getcode();
+                std::cout<< std::left << std::setw(18) << std::setfill(space)<< "| "+F.getdest().getcode()+ ":" + F.getdest().getcity();
+                std::cout<< std::left << std::setw(20) << std::setfill(space)<< "| "+printstatus(F);
                 if(F.atorigin(F.getPoint(rn))){
-                    std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getorigin().getcode();
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getorigin().getcode();
                 }
                 else if (F.atdest(F.getPoint(rn))){
-                    std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getdest().getcode();
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getdest().getcode();
                 }
                 else {
                     resettime(false);
-                    std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getPoint(rn).toString();
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getPoint(rn).toString();
                 }
-                std::cout<< std::left << std::setw(11) << std::setfill(space)<< F.liftofftime();
-                std::cout<< std::left << std::setw(10) << std::setfill(space)<< F.landingtime();
+                std::cout<<  "| ";
+                convert(F.liftofftime());
+                std::cout<<std::setw(6) << " " <<"| ";
+                convert(F.landingtime());
             }
         }
         else{
-            std::cout<<"\nNo flights departing today from this airport.";
+            std::cout<<"\n\nNo flights departing today from this airport.";
         }
 
         // // arrivals
         if(!findFlights(Airports[searchindex], "A").empty()){
-            std::cout<< "\nArrivals:  " << "-----"; 
-            std::cout <<"\nCode         |  Arriving from  |    Status    |  Location        | Departure | Arrival ";
+            std::cout<< "\n\nArrivals:  " << "\n-----"; 
+            std::cout << std::left << std::setw (16) << std::setfill(space) << "\n| Code:";
+            std::cout<< std::setw(18) << std::setfill(space) << "| Arriving from:";
+            std::cout<< std::setw(16) << std::setfill(space) << "| Status:";
+            std::cout<< std::setw(30) << std::setfill(space) << "| Location:";
+            std::cout<< std::setw(11) << std::setfill(space) << "| Departure:";
+            std::cout<< std::setw(10) << std::setfill(space) << "| Arriving:";
+            std::cout<< std::left << std::setw(101) << std::setfill('-')<< "\n";
             for (Flight F : findFlights(Airports[searchindex], "A") ){
                 std::cout<<"\n";
-                std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getcode();
-                std::cout<< std::left << std::setw(18) << std::setfill(space)<< F.getorigin().getcode()<< ":" <<F.getorigin().getcity();
-                std::cout<< std::left << std::setw(16) << std::setfill(space)<<printstatus(F);
+                std::cout<< std::left << std::setw(15) << std::setfill(space)<< "| "+F.getcode();
+                std::cout<< std::left << std::setw(18) << std::setfill(space)<< "| "+F.getdest().getcode()+ ":" + F.getorigin().getcity();
+                std::cout<< std::left << std::setw(16) << std::setfill(space)<< "| "+printstatus(F);
                 if(F.atorigin(F.getPoint(rn))){
-                    std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getorigin().getcode();
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getorigin().getcode();
                 }
                 else if (F.atdest(F.getPoint(rn))){
-                    std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getdest().getcode();
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getdest().getcode();
                 }
                 else {
                     resettime(false);
-                    std::cout<< std::left << std::setw(16) << std::setfill(space)<< F.getPoint(rn).toString();
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getPoint(rn).toString();
                 }
-                std::cout<< std::left << std::setw(11) << std::setfill(space)<< F.liftofftime();
-                std::cout<< std::left << std::setw(10) << std::setfill(space) <<F.landingtime();
+                std::cout<<  "| ";
+                convert(F.liftofftime());
+                std::cout<<std::setw(6) << " " <<"| ";
+                convert(F.landingtime());
             }
         }
         else{
-            std::cout<<"\nNo flights arriving to this airport today.";
+            std::cout<<"\n\nNo flights arriving to this airport today.";
     
         }
     }
