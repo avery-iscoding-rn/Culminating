@@ -233,6 +233,7 @@ void scheduleflights() {
         if (estimatedarrival >= 1439) { //if goes beyond the 24 hour time constraint
             withintheday = false;
             std::cout << "\nWe're done making flights";
+            
 
         } else { //make the flight
             
