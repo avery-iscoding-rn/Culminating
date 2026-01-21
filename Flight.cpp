@@ -42,18 +42,21 @@ Point Flight::getPoint(int timern){
     // I think that's why but not 100% sure lol
     double surfacedistance = R * std::acos(angle);
 
-    double distance = Point::getdistance(destination->getlocation(), destination->getlocation());
+    double distance = Point::getdistance(origin->getlocation(), destination->getlocation());
     // not needed (?)
 
     double Distancetravelled = aircraft->getspeed() * (timern - liftoff);
     //Velocity (km/h) x time spent = distance travelled
 
-    double t = Distancetravelled/surfacedistance;
+    double t = Distancetravelled/distance;
     // Factor by which you need to multiply the unit vector [x,y,z] because that is just a ratio, not an exact distance
     // Percent of trip done
 
     if (t > 1){
         t = .999;
+    }
+    if (t==0){
+        t = 0.0001;
     }
 
     // Spherical linear interpolation

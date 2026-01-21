@@ -175,16 +175,17 @@ void initalflights() {
     std::cout << std::fixed << std::setprecision(2);
     
     //finding planes which airport each plane is at
-    int j;
     
     for (int p = 0; p < Planes.size(); p++) { //for every plane
-        //std::cout << "\nplane number " << p << ", " << Planes[p].getmodel();
-        //std::cout << "\nplanes # " << p;
+        int j; //indexing
+
+        // std::cout << "\nplane number " << p << ", " << Planes[p].getmodel();
+        // std::cout << "\nplanes # " << p;
         for (int a = 0; a < Airports.size(); a++) { //for every airport
-            //std::cout << "\nairports # " << a;
+            // std::cout << "\nairports # " << a;
             if (Airports[a].contains(Planes[p], 0) != -1) {// if plane is in this airport
                 j = a;
-                //std::cout << "\nfound in " << Airports[a].getname();
+                // std::cout << "\nfound in " << Airports[a].getname();
             }
         }
         //randomizing destination
@@ -192,8 +193,8 @@ void initalflights() {
         do {
             dest = randomInt(0,11);
         } while (dest == j);
-        //std::cout << "\norigin" << Airports[j].getname();
-        //std::cout << "\ndesination" << Airports[dest].getname();
+        // std::cout << "\norigin" << Airports[j].getname();
+        // std::cout << "\ndesination" << Airports[dest].getname();
         
         //creating flight
         //randomizing flight num and fact checking it doesnt already exist.
@@ -213,8 +214,8 @@ void initalflights() {
         //estimated arrival time
         int atime; 
         atime = Point::getdistance(Airports[j].getlocation(),Airports[dest].getlocation())/Planes[p].getspeed(); //time is distance/speed
-        Flight temporary(std::to_string(ID), Airports[dest] ,Airports[j], Airports[j].planes[0],allminutes, allminutes + (60*atime)); //tracking time + (60(to convert to minutes) x estimiated time) --> tracked estimated time (in allminutes)
-        //std::cout << "\nflight created";
+        Flight temporary(std::to_string(ID), Airports[dest] ,Airports[j], Planes[p],allminutes, allminutes + (60*atime)); //tracking time + (60(to convert to minutes) x estimiated time) --> tracked estimated time (in allminutes)
+        // std::cout << "\nflight created using " << temporary.getaircraft().getmodel();
         plannedflights.push_back(temporary);
 
         //getting ref to temporary
@@ -248,6 +249,7 @@ void scheduleflights() {
     while (index < plannedflights.size()) { //looping so long as it's within the same day (24 hours)
         
         Flight& previous = plannedflights[index]; //the flight we're looking at to base new one off of
+        // std::cout << "\nBased off of flight " <<index << " unsing " << plannedflights[index].getaircraft().getmodel();
 
         //SETTING EACH VARIABLE FOR NEW FLIGHT
         //generating code
@@ -261,6 +263,7 @@ void scheduleflights() {
                 }
             }
         } while (repeated);
+        // std::cout << "\nflight number created";
 
             //randomizing destination
             int dest;
@@ -271,14 +274,16 @@ void scheduleflights() {
         //doing time math
         int leavingtime = previous.landingtime() + 45; //adding forty five mintues for stuff until the plane leaves again
         double estimatedarrival = leavingtime + 60*(Point::getdistance(previous.getdest().getlocation(),Airports[dest].getlocation())/previous.getaircraft().getspeed());
-
+        // std::cout << "Leaving at ";
         //checking if we need to break this bad boy
-        if (estimatedarrival >= 1439) { //if goes beyond the 24 hour time constraint            
-            
+        if (estimatedarrival >= 1439) { //if goes beyond the 24 hour time constraint   
+            //THEN WE'RE NOT COMMMITTING THIS FLIGHT- 
+            // std::cout << "can't make this flight, estimatedarrival is " << estimatedarrival;
         } else { //make the flight
             
             Flight newflight(std::to_string(ID), Airports[dest], previous.getdest(), previous.getaircraft(), leavingtime, estimatedarrival);
             plannedflights.push_back(newflight);
+            // std::cout << "created flight";
         }
         index++;
     }
@@ -302,7 +307,8 @@ void printflightschedule() {
     std::cout<< std::setw(20) << std::setfill(space) << "| Departure Time:";
     std::cout<< std::setw(20) << std::setfill(space) << "| Arrival Time:";
     std::cout<< std::setw(10) << std::setfill(space) << "| Distance:";
-    std::cout<< std::left << std::setw(120) << std::setfill('-')<< "\n";
+    std::cout<< std::setw(20) << std::setfill(space) << "| Aircraft:";
+    std::cout<< std::left << std::setw(128) << std::setfill('-')<< "\n";
     for (Flight F : plannedflights) {
         std::string s;
         std::cout<<"\n";
@@ -327,7 +333,8 @@ void printflightschedule() {
         std::cout<<std::setw(13) << " " <<"";
         double d = Point::getdistance(F.getorigin().getlocation(),F.getdest().getlocation());
         int dist = (int) d;
-        std::cout<< std::left << std::setw(6) << std::setfill(space)<< "| " + std::to_string(dist)+ " km";
+        std::cout<< std::left << std::setw(11) << std::setfill(space)<< "| " + std::to_string(dist)+ " km";
+        std::cout<< std::left << std::setw(20) << std::setfill(space)<< "| " + F.getaircraft().getmodel();
         //std::cout<< std::left << std::setw(6) << std::setfill(space)<< "| " + std::to_string(dist)+ "km /" + std::to_string(dist/F.getaircraft().getspeed()) + "hrs, " + std::to_string(F.getaircraft().getspeed()) + "km/h)";
     }
         
@@ -367,11 +374,11 @@ std::string printstatus(
     Flight F){
         std::string status;
     if (allminutes < F.liftofftime()) {
-        status = "Has not departed " + F.getorigin().getname(); 
+        status = "Has not departed " + F.getorigin().getcode(); 
     } else if (allminutes > F.landingtime()) {
-        status = "Has already arrived at " + F.getdest().getname();
+        status = "Has already arrived at " + F.getdest().getcode();
     } else { //flying rn
-        status = "\nDeparted from " + F.getorigin().getname() + " and en route to " + F.getdest().getname();
+        status = "Departed from " + F.getorigin().getcode() + " and en route to " + F.getdest().getcode();
     }
     return status;
 }
@@ -513,7 +520,7 @@ void searchairport(){
                     s = "Now Flying";
                 }
                 else if (F.liftofftime() > allminutes){
-                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+F.getorigin().getcode();
+                    std::cout<< std::left << std::setw(30) << std::setfill(space)<< "| "+printstatus(F);
                     s = "Departing soon";
                 }
                 else{
