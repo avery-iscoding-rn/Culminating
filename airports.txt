@@ -24,7 +24,7 @@ Mexico City
 MEX
 19.4361
 -99.0719
-Haneda Airport 
+Haneda Airport
 Tokyo
 HND
 35.5483
@@ -55,7 +55,7 @@ ADD
 8.9838
 38.7963
 Tirana International Airport
-Tirana 
+Tirana
 TIA
 41.41472
 19.72056
