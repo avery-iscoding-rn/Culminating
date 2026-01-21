@@ -45,6 +45,40 @@ int randomInt(int low, int high) {
     return dist(gen);
 }
 
+//refreshes time (boht HH:MM and allminutes which is just and ongoing counter of the seconds since program started)
+void resettime(bool print) {
+    rn = time(NULL);
+    rn = rn-start;
+
+    //converting into readable format
+    allminutes = rn; //all seconds
+
+    minutes = rn%60; //irl seconds
+    hours = rn/60; //irl minutes
+
+    realhours = hours/60; //removing real hours
+    hours = hours - (realhours*60);
+
+    if (print) {
+        std::cout << "\n\n------------------------\n";
+        printf("January 1st, 2075, %02d:%02d\n", hours, minutes);
+    }
+
+    //Stopping the clock at 24 hours
+    if (hours > 23) {
+        running = false;
+        std::cout << "\n\n The day is over! Thanks for visiting!";
+    }
+}
+
+//converts AND PRINTS an allminutes value into the 24 hour HH:MM clock string
+void convert(int allmin) {
+    resettime(false);
+    int h = allmin/60;
+    int m = allmin%60;
+
+    printf("%02d:%02d\n", h, m);
+}
 // prints status
 std::string printstatus(Flight F){
     if (F.getaircraft().status()){
@@ -114,8 +148,9 @@ void createplanes() {
 
 //creates an inital flight for each plane to start the schedule (vector of flights)
 void initalflights() {
-    //std::cout << "\ninital flights";
-    //finding planes which airport each plane is at
+    //rounding set up
+    std::cout << std::fixed << std::setprecision(2);
+
     int j;
     
     for (int p = 0; p < Planes.size(); p++) { //for every plane
@@ -175,7 +210,7 @@ void scheduleflights() {
     bool withintheday = true;
     int index = 0; //the flight we're looking at to create the new flight
 
-    while (withintheday) { //looping so long as it's within the same day (24 hours)
+    while (index < plannedflights.size()) { //looping so long as it's within the same day (24 hours)
 
         Flight previous = plannedflights[index]; //the flight we're looking at to base new one off of
         std::cout << "\nbasing off of flight number " << index;
@@ -208,8 +243,7 @@ void scheduleflights() {
 
         //checking if we need to break this bad boy
         if (estimatedarrival >= 1439) { //if goes beyond the 24 hour time constraint
-            withintheday = false;
-            std::cout << "\nWe're done making flights";
+            std::cout << "\ncan't make the flight";
             
 
         } else { //make the flight
@@ -218,9 +252,13 @@ void scheduleflights() {
             std::cout << "\ncreated the flight";
             plannedflights.push_back(newflight);
             std::cout << "\npushed it into vector";
-            index++;
         }
+        index++;
     }
+    
+    //sorting flights according to their departure time
+    std::sort(plannedflights.begin(), plannedflights.end());
+
 
 }
 
@@ -251,39 +289,6 @@ void printflightschedule() {
 //     return fake;
 // }
 
-//refreshes time (boht HH:MM and allminutes which is just and ongoing counter of the seconds since program started)
-void resettime(bool print) {
-    rn = time(NULL);
-    rn = rn-start;
-
-    //converting into readable format
-    allminutes = rn; //all seconds
-
-    minutes = rn%60; //irl seconds
-    hours = rn/60; //irl minutes
-
-    realhours = hours/60; //removing real hours
-    hours = hours - (realhours*60);
-
-    if (print) {
-        std::cout << "\n\n------------------------\n";
-        printf("January 1st, 2075, %02d:%02d\n", hours, minutes);
-    }
-
-    //Stopping the clock at 24 hours
-    if (hours > 23) {
-        running = false;
-        std::cout << "\n\n The day is over! Thanks for visiting!";
-    }
-}
-
-//converts AND PRINTS an allminutes value into the 24 hour HH:MM clock string
-void convert(int allmin) {
-    int h = allmin/60;
-    int m = allmin%60;
-
-    printf("%02d:%02d\n", h, m);
-}
 
 //searches vectors for the given flight code (basically linear search)
 void searchflightcode(){
@@ -493,7 +498,7 @@ void menu() {
 
 
     if (num == 1) { // FLIGHT SCHEDULE
-        std::cout << "placeholder";
+        printflightschedule();
         
     } else if (num == 2) { //SEE LIVE UPDATES
         std::cout << "placeholder";
@@ -518,7 +523,7 @@ void menu() {
 void setup() { 
     readairports();
     createplanes();
-    initalflights();
+    scheduleflights();
 }
 
 
