@@ -246,6 +246,7 @@ void scheduleflights() {
 
 }
 
+
 //prints full flight schedule in a designated format (i.e. contents of plannedflights)
 void printflightschedule() {
     std::cout << std::fixed << std::setprecision(2); //round to 2 decimal places for output
