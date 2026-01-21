@@ -16,16 +16,15 @@ private:
     bool flying;
     int capacity, speed;
 public:
+    Plane(std::string n, Point loc, bool f, int cp, int s, int fn);
     int flightnum; //current flight number
-    Plane(std::string n, Point loc, bool f, int cp, int s);
     std::string getmodel() const;
     //returns true if plane is flying, false if plane is not
     bool status();
     int getcapacity();
     int getspeed();
     Point getcoordinates();
-
-    //switches status to false, as plane is no longer flying
+     //switches status to false, as plane is no longer flying
     void land();
     //switches status to true, as plane is no longer flying
     void takeoff();

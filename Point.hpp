@@ -16,5 +16,6 @@ public:
     static double getdistance(const Point& p1, const Point& p2); //in KM
     double getlat();
     double getlong();
+    std::string toString();
 };
 #endif

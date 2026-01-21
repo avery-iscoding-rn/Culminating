@@ -3,12 +3,12 @@ Pearson International Airport
 Toronto
 YYZ
 43.6798
-79.6284
+-79.6284
 John F Kennedy Intl Airport
 New York
 JFK
 40.6446
-73.7797
+-73.7797
 Paris Charles de Gaulle Airport
 Paris
 CDG
@@ -18,12 +18,12 @@ Heathrow Airport
 London
 LHR
 51.4680
-0.4550
+-0.4550
 Mexico City International Airport Benito Juárez
 Mexico City
 MEX
 19.4361
-99.0719
+-99.0719
 Haneda Airport 
 Tokyo
 HND
