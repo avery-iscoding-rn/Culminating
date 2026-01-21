@@ -199,7 +199,7 @@ void scheduleflights() {
     int index = 0; //the flight we're looking at to create the new flight
 
     while (withintheday) { //looping so long as it's within the same day (24 hours)
-
+        
         Flight previous = plannedflights[index]; //the flight we're looking at to base new one off of
         std::cout << "\nbasing off of flight number " << index;
 
@@ -243,6 +243,9 @@ void scheduleflights() {
             index++;
         }
     }
+
+    //sorting flights according to their departure time
+    std::sort(plannedflights.begin(), plannedflights.end());
 
 }
 

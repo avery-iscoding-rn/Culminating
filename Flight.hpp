@@ -38,6 +38,9 @@ public:
     bool atorigin(Point mycoordinates);
     bool atdest(Point mycoordinates);
 
+    //overriding < operator so we can compare flights and sort them in a vector (according to departure time)
+    bool operator<(const Flight& other) const;
+
 };
 
 struct coordinates;
