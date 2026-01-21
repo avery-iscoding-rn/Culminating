@@ -270,7 +270,7 @@ void printflightschedule() {
     std::cout << "\nFLIGHT SCHEDULE:\n----------------";
     for (int i = 0; i < plannedflights.size(); i++) {
         Flight thisone = plannedflights[i];
-        std::cout << "\n\nFlight " << thisone.getcode() << ", " << thisone.getaircraft().getmodel() << " travelling " << thisone.getorigin().getcity() << " (" << thisone.getorigin().getcode() << ") -> " << thisone.getdest().getcity() << " (" << thisone.getdest().getcode() << ")";
+        std::cout << "\n\nFlight " << thisone.getcode() << "\n" << thisone.getaircraft().getmodel() << " travelling " << thisone.getorigin().getcity() << " (" << thisone.getorigin().getcode() << ") -> " << thisone.getdest().getcity() << " (" << thisone.getdest().getcode() << ")";
         std::cout << "\nDeparture time ";
         convert(thisone.liftofftime());
         std::cout << "Estimated arrival time ";
@@ -462,26 +462,43 @@ void searchairport(){
 
 void findplane(){
     std::cout << "Enter the plane model (example: Boeing737): ";
-        std::string plane;
-        std::cin>> plane;
-        for (Plane P: Planes){
-            if (P.getmodel() == plane){
-                std::cout<< "\n"<< plane;
-                std::cout<<"\nCapactity: "<< P.getcapacity();
-                std::cout<< "\nPlane speed: " << P.getspeed();
-                if (P.status()== true){
-                    std::cout<< "\nStatus: Currently flying";
-                    std::cout<< "\nLocation: " << P.getcoordinates().toString(); 
+    std::string plane;
+    std::cin>> plane;
+    for (Plane P: Planes){
+        if (P.getmodel() == plane){
+            std::cout<< "\n"<< plane << "\n------------------";
+            std::cout<<"\nCapactity: "<< P.getcapacity();
+            std::cout<< "\nPlane speed: " << P.getspeed() << "km/h";
+            if (P.status()== true){
+                std::cout<< "\nStatus: Currently flying";
+                std::cout<< "\nLocation: " << P.getcoordinates().toString(); 
+            }
+            else{
+                std::cout<< "\nLocation: ";
+                for (Flight F: plannedflights){
+                    if (F.getcode()==std::to_string(P.flightnum) && F.atorigin(F.getPoint(allminutes))){
+                        std::cout<< F.getorigin().getcode();
+                    }
+                    else if (F.getcode()==std::to_string(P.flightnum) && F.atdest(F.getPoint(allminutes))){
+                        std::cout<< F.getdest().getcode();
+                    }
                 }
-                else{
-                    std::cout<< "\nLocation: ";
-                    for (Flight F: plannedflights){
-                        if (F.getcode()==std::to_string(P.flightnum) && F.atorigin(F.getPoint(allminutes))){
-                            std::cout<< F.getorigin().getcode();
-                        }
-                        else if (F.getcode()==std::to_string(P.flightnum) && F.atdest(F.getPoint(allminutes))){
-                            std::cout<< F.getdest().getcode();
-                        }
+
+            }
+            std::cout << "\n\nScheduled flights today: ";
+            for (int i = 0; i < plannedflights.size(); i++) {
+                if (plannedflights[i].getaircraft() == P) {
+
+                    //printing flight info
+                    Flight thisone = plannedflights[i];
+                    std::cout << "\n\nFlight " << thisone.getcode() << "\n" << thisone.getaircraft().getmodel() << " travelling " << thisone.getorigin().getcity() << " (" << thisone.getorigin().getcode() << ") -> " << thisone.getdest().getcity() << " (" << thisone.getdest().getcode() << ")";
+                    std::cout << "\nDeparture time ";
+                    convert(thisone.liftofftime());
+                    std::cout << "Estimated arrival time ";
+                    convert(thisone.landingtime());
+                    double dist = Point::getdistance(thisone.getorigin().getlocation(),thisone.getdest().getlocation());
+                    std::cout << "Travelling " << dist << "km in about " << dist/thisone.getaircraft().getspeed() << " hours (speed of " << thisone.getaircraft().getspeed() << "km/h)";
+
                 }
             }
         }
