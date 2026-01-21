@@ -4,41 +4,43 @@ Flight::Flight(std::string c, Airport& d, Airport& o, Plane p, double l, double 
     :code(c), destination(&d), origin(&o), aircraft(p), liftoff(l), arrival(a) {}
 
 struct coordinates {
+    // longitude and latitude angles must be converted to an [x,y,z] vector to find current point
     double x;
     double y; 
     double z;
-}; // longitude and latitude angles must be converted to an [x,y,z] vector
+}; 
 
 //finds current location of a plane en route between two different airport depending on the current time
 Point Flight::getPoint(int timern){
 
     int R = 6371; // earth's radius
 
+    // Converting degrees to radians
     double φ = origin->getlocation().getlat() * M_PI / 180;
     double λ = origin->getlocation().getlong()* M_PI / 180;
-    // Converting degrees to radians
+
+    // Using degrees in radians to a vector (origin)
 
     double xO = cos(φ) * cos(λ);
     double yO = cos(φ) * sin(λ);
     double zO = sin(φ);
-    // Using degrees in radians to a vector (origin)
 
+    // Converting degrees to radians
     double φ2 = destination->getlocation().getlat()* M_PI / 180;
     double λ2 = destination->getlocation().getlong()* M_PI / 180;
-    // Converting degrees to radians
 
+    // Using degrees in radians to a vector (destination)
     double xD = cos(φ2) * cos(λ2);
     double yD = cos(φ2) * sin(λ2);
     double zD = sin(φ2);
-    // Using degrees in radians to a vector (destination)
 
-    double angle = (xO*xD)+(yO*yD)+(zO*zD);
-    // Dot product to find angle between 2 location vectors
+     // Dot product to find angle between 2 location vectors
+     double angle = (xO*xD)+(yO*yD)+(zO*zD);
 
-    double surfacedistance = R * std::acos(angle);
     // Multiplying the cos of this angle by the earth's radius will give us the surface distance between the 2 points
     // Because cos theta = a / h so a = surface distance and h = the earth's radius
     // I think that's why but not 100% sure lol
+    double surfacedistance = R * std::acos(angle);
 
     double distance = Point::getdistance(destination->getlocation(), destination->getlocation());
     // not needed (?)
@@ -62,9 +64,8 @@ Point Flight::getPoint(int timern){
         (sin((1-t)*angle) / sin(angle) * zO + sin (t*angle) / sin(angle) * zD),
     };
 
-
-    double len = sqrt(currentPoint.x*currentPoint.x + currentPoint.y*currentPoint.y + currentPoint.z*currentPoint.z);
     // Resultant magnitude (Length of vector)
+    double len = sqrt(currentPoint.x*currentPoint.x + currentPoint.y*currentPoint.y + currentPoint.z*currentPoint.z);
 
     if (len != 0) {
         // can't be 0
@@ -92,7 +93,7 @@ void Flight::fly(bool rweflying, int timern) {
 
 //returns true is plane location is close enough to airport origin location
 bool Flight::atorigin(Point mycoordinates) {
-    if ((mycoordinates.getlat() >= origin->getlocation().getlat()-1 && mycoordinates.getlat() <= origin->getlocation().getlat()+1) && (mycoordinates.getlong() >= origin->getlocation().getlong()-1 && mycoordinates.getlong() <= origin->getlocation().getlong()+1)){
+    if ((mycoordinates.getlat() >= origin->getlocation().getlat()-2 && mycoordinates.getlat() <= origin->getlocation().getlat()+2) && (mycoordinates.getlong() >= origin->getlocation().getlong()-2 && mycoordinates.getlong() <= origin->getlocation().getlong()+2)){
         aircraft.takeoff(); //starts flight;
         return true;
     }
@@ -101,9 +102,9 @@ bool Flight::atorigin(Point mycoordinates) {
     }
 }
 
-//returns true if plane location is close enough to 
+//returns true if plane location is close enough to destination (marks as at the airport)
 bool Flight::atdest(Point mycoordinates) {
-    if ((mycoordinates.getlat() >= destination->getlocation().getlat()-1 && mycoordinates.getlat() <= destination->getlocation().getlat()+1) && (mycoordinates.getlong() >= destination->getlocation().getlong()-1 && mycoordinates.getlong() <= destination->getlocation().getlong()+1)){
+    if ((mycoordinates.getlat() >= destination->getlocation().getlat()-2 && mycoordinates.getlat() <= destination->getlocation().getlat()+2) && (mycoordinates.getlong() >= destination->getlocation().getlong()-2 && mycoordinates.getlong() <= destination->getlocation().getlong()+2)){
         aircraft.land();//ends flight
         return true;
     }
