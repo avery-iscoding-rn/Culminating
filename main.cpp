@@ -54,6 +54,33 @@ int randomInt(int low, int high) {
     return dist(gen);
 }
 
+
+//refreshes time (boht HH:MM and allminutes which is just and ongoing counter of the seconds since program started)
+void resettime(bool print) {
+    rn = time(NULL);
+    rn = rn-start;
+
+    //converting into readable format
+    allminutes = rn; //all seconds
+
+    minutes = rn%60; //irl seconds
+    hours = rn/60; //irl minutes
+
+    realhours = hours/60; //removing real hours
+    hours = hours - (realhours*60);
+
+    if (print) {
+        std::cout << "\n\n------------------------\n";
+        printf("January 1st, 2075, %02d:%02d\n", hours, minutes);
+    }
+
+    //Stopping the clock at 24 hours
+    if (hours > 23) {
+        running = false;
+        std::cout << "\n\n The day is over! Thanks for visiting!";
+    }
+}
+
 //converts AND PRINTS an allminutes value into the 24 hour HH:MM clock string
 void convert(int allmin) {
     int h = allmin/60;
@@ -550,7 +577,7 @@ void menu() {
 
 
     if (num == 1) { // FLIGHT SCHEDULE
-        std::cout << "placeholder";
+        printflightschedule();
         
     } else if (num == 2) { //SEE LIVE UPDATES
         for (int i = 0; i < liveupdates.size(); i++) {
@@ -685,14 +712,13 @@ void update() {
 int main(void){
     std::cout << "WELCOME STATEMENT (PLACEHOLDER)\n";
     setup();
+    scheduleflights();
 
     int test = 0;
     while (running) {
         resettime(true);
         menu();
-        for (int i = 0; i < plannedflights.size(); i++) {
-            plannedflights[i].fly(plannedflights[i].getaircraft().status(),rn);
-        }
+        update();
     }
 
     return 0;
