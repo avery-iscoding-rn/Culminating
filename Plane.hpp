@@ -15,6 +15,7 @@ private:
     Point coordinates;
     bool flying;
     int capacity, speed;
+
 public:
     Plane(std::string n, Point loc, bool f, int cp, int s, int fn);
     int flightnum; //current flight number
@@ -24,8 +25,6 @@ public:
     int getcapacity();
     int getspeed();
     Point getcoordinates();
-    //set coordinates
-    void setcoordinates(Point p);
      //switches status to false, as plane is no longer flying
     void land();
     //switches status to true, as plane is no longer flying

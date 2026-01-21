@@ -26,10 +26,6 @@ bool Plane::status() {
     return flying; //if flying
 }
 
-//set coordinates
-    void Plane::setcoordinates(Point p) {
-        coordinates = p;
-    }
 
 //switches status to false, as plane is no longer flying
 void Plane::land() {
