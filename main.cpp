@@ -451,13 +451,14 @@ void searchairport(){
                 std::cout<< std::left << std::setw(11) << std::setfill(space)<< F.liftofftime();
                 std::cout<< std::left << std::setw(10) << std::setfill(space) <<F.landingtime();
             }
-            else{
-                std::cout<<"\nNo flights arriving to this airport today.";
-            }
+        }
+        else{
+            std::cout<<"\nNo flights arriving to this airport today.";
+    
         }
     }
-
 }
+
 
 void findplane(){
     std::cout << "Enter the plane model (example: Boeing737): ";
