@@ -425,6 +425,9 @@ void searchairport(){
                 std::cout<< std::left << std::setw(10) << std::setfill(space)<< F.landingtime();
             }
         }
+        else{
+            std::cout<<"\nNo flights departing today from this airport.";
+        }
 
         // // arrivals
         if(!findFlights(Airports[searchindex], "A").empty()){
@@ -447,6 +450,9 @@ void searchairport(){
                 }
                 std::cout<< std::left << std::setw(11) << std::setfill(space)<< F.liftofftime();
                 std::cout<< std::left << std::setw(10) << std::setfill(space) <<F.landingtime();
+            }
+            else{
+                std::cout<<"\nNo flights arriving to this airport today.";
             }
         }
     }
