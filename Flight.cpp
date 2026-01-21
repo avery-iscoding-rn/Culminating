@@ -135,3 +135,9 @@ double Flight::liftofftime(){
 double Flight::landingtime(){
     return arrival;
 }
+
+//SECOND OVERLOADING OPERATOR
+//overriding < operator so we can compare flights and sort them in a vector (according to departure time)
+bool Flight::operator<(const Flight& other) const {
+    return liftoff < other.liftoff;
+}
